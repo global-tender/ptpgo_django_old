@@ -4,7 +4,7 @@ Developed using Python 3.4.3, Django 1.9.1
 Database is PostgreSQL 9.1
 ```
 
-### Restore database and site backups; restore ssl certificates
+### Restore database and site backups
 
 ### Install requirements and setup virtualenv:
 
@@ -25,10 +25,10 @@ $ pip install -r requirements.txt
 
 ### Setup Production (using nginx + gunicorn)
 
-####Running gunicorn (WSGI HTTP Server) this way (5 instances, max timeout 120 seconds):
+####Running gunicorn (WSGI HTTP Server) this way (7 instances, max timeout 1000 seconds):
 
 ```
-gunicorn system.wsgi -w 5 -t 120 --log-file=/path/to/gunicorn.log -b 127.0.0.1:9292
+gunicorn system.wsgi -w 7 -t 1000 --log-file=/path/to/gunicorn.log -b 127.0.0.1:9292
 ```
 
 ####Nginx config for our virtual host (replace PATH where needed):
