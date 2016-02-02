@@ -1,7 +1,7 @@
 
 ```
-Developed using Python 3.4.3, Django 1.9.1
-Database is PostgreSQL 9.1
+Developed using Python 3.4.2, Django 1.9.1
+Database is PostgreSQL 9.4
 ```
 
 ### Restore database and site backups
@@ -9,15 +9,15 @@ Database is PostgreSQL 9.1
 ### Install requirements and setup virtualenv:
 
 ```
-$ su - global_tender	# change username
+$ su - ptpgo	# change username
 $ pip install virtualenvwrapper
 ...
 $ export WORKON_HOME=~/Envs
 $ mkdir -p $WORKON_HOME
 $ source /usr/local/bin/virtualenvwrapper.sh
 
-$ mkvirtualenv --system-site-packages --python=/usr/local/bin/python3 global-rent
-$ workon global-rent
+$ mkvirtualenv --python=/usr/bin/python3 ptpgo
+$ workon ptpgo
 
 # enter repository root directory and install python packages:
 $ pip install -r requirements.txt
@@ -28,7 +28,7 @@ $ pip install -r requirements.txt
 ####Running gunicorn (WSGI HTTP Server) this way (7 instances, max timeout 1000 seconds):
 
 ```
-gunicorn system.wsgi -w 7 -t 1000 --log-file=/path/to/gunicorn.log -b 127.0.0.1:9292
+gunicorn system.wsgi -w 7 -t 1000 --log-file=/path/to/logs/ptpgo-backend.gunicorn.log -b 127.0.0.1:9292
 ```
 
 ####Nginx config for our virtual host (replace PATH where needed):
@@ -37,12 +37,12 @@ gunicorn system.wsgi -w 7 -t 1000 --log-file=/path/to/gunicorn.log -b 127.0.0.1:
 server {
         listen 80;
 
-        server_name gl-rent.ihptru.net;
+        server_name ptpgo.ihptru.net;
 
-        access_log /data/global-tender/logs/gl_rent.access.log;
-        error_log /data/global-tender/logs/gl_rent.error.log;
+        access_log /path/to/logs/ptpgo-backend.access.log;
+        error_log /path/to/logs/ptpgo-backend.error.log;
 
-        root /data/global-tender/global-rent/www/gl_rent/;
+        root /path/to/ptpgo/app/name/;
 
         location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
                 expires 10d;
@@ -71,12 +71,12 @@ server {
 
 
         location /static/ { # STATIC_URL
-                alias /data/global-tender/global-rent/www/gl_rent/static/; # STATIC_ROOT
+                alias /path/to/ptpgo/app/name/static/; # STATIC_ROOT
                 expires 30d;
         }
 
         location = /favicon.ico {
-                alias /data/global-tender/global-rent/www/gl_rent/static/favicon.png;
+                alias /path/to/ptpgo/app/name/static/favicon.png;
         }
 
         location / {

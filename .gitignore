@@ -1,5 +1,5 @@
 *.pyc
 /__pycache__/
 /system/__pycache__/
-/gl_rent/__pycache__/
+/ptpgo/__pycache__/
 /system/settings.py

@@ -1,5 +1,5 @@
 """
-WSGI config for gl_rent project.
+WSGI config for ptpgo project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
