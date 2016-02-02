@@ -1,7 +1,7 @@
 
 ```
-Developed using Python 3.4.2, Django 1.9.1
-Database is PostgreSQL 9.4
+Developed using Python 3.4.3, Django 1.9.1
+Database is PostgreSQL 9.1
 ```
 
 ### Restore database and site backups
@@ -35,59 +35,59 @@ gunicorn system.wsgi -w 7 -t 1000 --log-file=/path/to/logs/ptpgo-backend.gunicor
 
 ```
 server {
-        listen 80;
+		listen 80;
 
-        server_name ptpgo.ihptru.net;
+		server_name ptpgo.ihptru.net;
 
-        access_log /path/to/logs/ptpgo-backend.access.log;
-        error_log /path/to/logs/ptpgo-backend.error.log;
+		access_log /path/to/logs/ptpgo-backend.access.log;
+		error_log /path/to/logs/ptpgo-backend.error.log;
 
-        root /path/to/ptpgo/app/name/;
+		root /path/to/ptpgo/app/name/;
 
-        location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
-                expires 10d;
-                add_header Pragma public;
-                add_header Cache-Control "public";
-        }
+		location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
+				expires 10d;
+				add_header Pragma public;
+				add_header Cache-Control "public";
+		}
 
-        gzip on;
-        gzip_disable "msie6";
+		gzip on;
+		gzip_disable "msie6";
 
-        gzip_comp_level 6;
-        gzip_min_length 1100;
-        gzip_buffers 16 8k;
-        gzip_proxied any;
-        gzip_types
-            text/plain
-            text/css
-            text/js
-            text/xml
-            text/javascript
-            application/javascript
-            application/x-javascript
-            application/json
-            application/xml
-            application/xml+rss;
+		gzip_comp_level 6;
+		gzip_min_length 1100;
+		gzip_buffers 16 8k;
+		gzip_proxied any;
+		gzip_types
+			text/plain
+			text/css
+			text/js
+			text/xml
+			text/javascript
+			application/javascript
+			application/x-javascript
+			application/json
+			application/xml
+			application/xml+rss;
 
 
-        location /static/ { # STATIC_URL
-                alias /path/to/ptpgo/app/name/static/; # STATIC_ROOT
-                expires 30d;
-        }
+		location /static/ { # STATIC_URL
+				alias /path/to/ptpgo/app/name/static/; # STATIC_ROOT
+				expires 30d;
+		}
 
-        location = /favicon.ico {
-                alias /path/to/ptpgo/app/name/static/favicon.png;
-        }
+		location = /favicon.ico {
+				alias /path/to/ptpgo/app/name/static/favicon.png;
+		}
 
-        location / {
-                proxy_pass_header Server;
-                proxy_set_header Host $http_host;
-                proxy_redirect off;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Scheme $scheme;
-                proxy_connect_timeout 120;
-                proxy_read_timeout 1000;
-                proxy_pass http://127.0.0.1:9292/;
-        }
+		location / {
+				proxy_pass_header Server;
+				proxy_set_header Host $http_host;
+				proxy_redirect off;
+				proxy_set_header X-Real-IP $remote_addr;
+				proxy_set_header X-Scheme $scheme;
+				proxy_connect_timeout 120;
+				proxy_read_timeout 1000;
+				proxy_pass http://127.0.0.1:9292/;
+		}
 }
 ```
