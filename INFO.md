@@ -4,7 +4,7 @@ Developed using Python 3.4.3, Django 1.9.1
 Database is PostgreSQL 9.1
 ```
 
-### Restore database and site backups
+### Restore database, disk backups, ssl certificates
 
 ### Install requirements and setup virtualenv:
 
@@ -35,7 +35,16 @@ gunicorn system.wsgi -w 7 -t 1000 --log-file=/path/to/logs/ptpgo-backend.gunicor
 
 ```
 server {
-		listen 80;
+		listen         80;
+		server_name    ptpgo.ihptru.net;
+		return         301 https://$server_name$request_uri;
+}
+
+server {
+		listen 443 ssl;
+
+		ssl_certificate /etc/letsencrypt/live/ptpgo.ihptru.net/fullchain.pem;
+		ssl_certificate_key /etc/letsencrypt/live/ptpgo.ihptru.net/privkey.pem;
 
 		server_name ptpgo.ihptru.net;
 
