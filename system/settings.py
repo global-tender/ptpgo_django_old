@@ -20,7 +20,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '87zs6f7@kbu2^0hynmf2n+6m_v03kfh^11f4p@xiic3ie8a&!2'
+SECRET_KEY = 'ptp0+9i3&3y1gtb$s8j5c8irlp9hf*86py4kckk00tx8alesas799go'
+
+#########
+#########
+
+REST_TOKEN = 'uu3OhdopDeiroop6ou6eiFiBquei7EYoIethei4mEec6Aax5eeshoB4a'
+
+#########
+#########
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,7 +46,6 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'ptpgo',
-	'rest_framework',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -124,13 +131,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-
-
-REST_FRAMEWORK = {
-	# Use Django's standard `django.contrib.auth` permissions,
-	# or allow read-only access for unauthenticated users.
-	'DEFAULT_PERMISSION_CLASSES': [
-		'rest_framework.permissions.IsAdminUser' # if `Staff status` enabled
-	],
-	'PAGE_SIZE': 10
-}

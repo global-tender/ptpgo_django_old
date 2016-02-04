@@ -7,24 +7,24 @@ class Clients(models.Model):
 	class Meta:
 		verbose_name_plural = 'Clients'
 
-	def __unicode__(self):
+	def __str__(self):
 		return self.email + '; id: ' + str(self.id)
 
 
 	email                     = models.CharField(max_length=100)
 	password                  = models.CharField(max_length=1000)
 
-	fio                       = models.CharField(max_length=1000)
-	about                     = models.CharField(max_length=10000)
+	fio                       = models.CharField(max_length=1000, blank=True, null=True)
+	about                     = models.TextField(blank=True, null=True)
 
-	country                   = models.ForeignKey('ptpgo.Country')
-	city                      = models.ForeignKey('ptpgo.City')
+	country                   = models.ForeignKey('ptpgo.Country', blank=True, null=True)
+	city                      = models.ForeignKey('ptpgo.City', blank=True, null=True)
 
-	phone                     = models.CharField(max_length=1000)
-	additional_contacts       = models.CharField(max_length=1000)
+	phone                     = models.CharField(max_length=1000, blank=True, null=True)
+	additional_contacts       = models.CharField(max_length=1000, blank=True, null=True)
 
-	photo                     = models.ForeignKey('ptpgo.ClientPhotos')
-	rating                    = models.ForeignKey('ptpgo.ClientRatings')
+	photo                     = models.ForeignKey('ptpgo.ClientPhotos', blank=True, null=True)
+	rating                    = models.ForeignKey('ptpgo.ClientRatings', blank=True, null=True)
 
 	registered                = models.DateTimeField('registered', default=datetime.datetime.now)
 	updated                   = models.DateTimeField('updated', default=datetime.datetime.now)
@@ -34,7 +34,7 @@ class Tokens(models.Model):
 	class Meta:
 		verbose_name_plural = "Tokens"
 
-	def __unicode__(self):
+	def __str__(self):
 		return self.client.email + ': ' + self.token
 
 	client                    = models.ForeignKey('ptpgo.Clients')
@@ -47,7 +47,7 @@ class ClientPhotos(models.Model):
 	class Meta:
 		verbose_name_plural = "ClientPhotos"
 
-	def __unicode__(self):
+	def __str__(self):
 		return 'id: ' + str(self.id) + '; client: ' + str(self.client.email)
 
 	client                    = models.ForeignKey('ptpgo.Clients')
@@ -59,7 +59,7 @@ class ClientRatings(models.Model):
 	class Meta:
 		verbose_name_plural = "ClientRatings"
 
-	def __unicode__(self):
+	def __str__(self):
 		return self.client.email + ': ' + str(self.rating)
 
 	client                    = models.ForeignKey('ptpgo.Clients')
@@ -71,7 +71,7 @@ class Country(models.Model):
 	class Meta:
 		verbose_name_plural = "Countries"
 
-	def __unicode__(self):
+	def __str__(self):
 		return str(self.id)
 
 class City(models.Model):
@@ -79,5 +79,5 @@ class City(models.Model):
 	class Meta:
 		verbose_name_plural = "Cities"
 
-	def __unicode__(self):
+	def __str__(self):
 		return str(self.id)
