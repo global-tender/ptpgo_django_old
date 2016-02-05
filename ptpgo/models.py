@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+from django.utils import timezone
 from django.db import models
 
 class Clients(models.Model):
@@ -26,8 +26,8 @@ class Clients(models.Model):
 	photo                     = models.ForeignKey('ptpgo.ClientPhotos', blank=True, null=True)
 	rating                    = models.ForeignKey('ptpgo.ClientRatings', blank=True, null=True)
 
-	registered                = models.DateTimeField('registered', default=datetime.datetime.now)
-	updated                   = models.DateTimeField('updated', default=datetime.datetime.now)
+	registered                = models.DateTimeField('registered', default=timezone.now)
+	updated                   = models.DateTimeField('updated', default=timezone.now)
 
 class Tokens(models.Model):
 
@@ -39,8 +39,8 @@ class Tokens(models.Model):
 
 	client                    = models.ForeignKey('ptpgo.Clients')
 	token                     = models.CharField(max_length=1000)
-	last_login                = models.DateTimeField('last login', default=datetime.datetime.now)
-	last_activity             = models.DateTimeField('last activity', default=datetime.datetime.now)
+	last_login                = models.DateTimeField('last login', default=timezone.now)
+	last_activity             = models.DateTimeField('last activity', default=timezone.now)
 
 class ClientPhotos(models.Model):
 
@@ -52,7 +52,7 @@ class ClientPhotos(models.Model):
 
 	client                    = models.ForeignKey('ptpgo.Clients')
 	photo                     = models.FileField(upload_to='client_photos/', blank=False, null=False)
-	updated                   = models.DateTimeField('updated', default=datetime.datetime.now)
+	updated                   = models.DateTimeField('updated', default=timezone.now)
 
 class ClientRatings(models.Model):
 
@@ -64,7 +64,7 @@ class ClientRatings(models.Model):
 
 	client                    = models.ForeignKey('ptpgo.Clients')
 	rating                    = models.FloatField(default=0.0)
-	updated                   = models.DateTimeField('updated', default=datetime.datetime.now)
+	updated                   = models.DateTimeField('updated', default=timezone.now)
 
 class Country(models.Model):
 

@@ -1,4 +1,5 @@
-
+import json
+from django.http import StreamingHttpResponse
 from django.conf import settings
 
 def is_rest_user(request):
@@ -12,3 +13,10 @@ def is_rest_user(request):
 			return True
 
 	return False
+
+def rest_unauthorized():
+	json_resp = {}
+	status = 403
+	json_resp['status'] = False
+	json_resp['responseText'] = 'Forbidden, authentication is required.'
+	return StreamingHttpResponse(json.dumps(json_resp, indent=4), content_type="application/vnd.api+json", status=status)
