@@ -20,3 +20,6 @@ def rest_unauthorized():
 	json_resp['status'] = False
 	json_resp['responseText'] = 'Forbidden, authentication is required.'
 	return StreamingHttpResponse(json.dumps(json_resp, indent=4), content_type="application/vnd.api+json", status=status)
+
+def default_response(json_resp, status):
+	return StreamingHttpResponse(json.dumps(json_resp, indent=4), content_type="application/vnd.api+json", status=status)

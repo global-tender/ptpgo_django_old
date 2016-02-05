@@ -131,3 +131,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+EMAIL_HOST='127.0.0.1'
+
+# Email address (FROM) in our custom mail methods
+SYSTEM_EMAIL_FROM = 'ptpgo <ptpgo@ihptru.net>'
+
+# Reply-to email address
+DEFAULT_FROM_EMAIL = 'ptpgo <ptpgo@ihptru.net>'

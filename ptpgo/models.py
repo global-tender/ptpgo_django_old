@@ -17,14 +17,10 @@ class Clients(models.Model):
 	fio                       = models.CharField(max_length=1000, blank=True, null=True)
 	about                     = models.TextField(blank=True, null=True)
 
-	country                   = models.ForeignKey('ptpgo.Country', blank=True, null=True)
-	city                      = models.ForeignKey('ptpgo.City', blank=True, null=True)
-
 	phone                     = models.CharField(max_length=1000, blank=True, null=True)
 	additional_contacts       = models.CharField(max_length=1000, blank=True, null=True)
 
-	photo                     = models.ForeignKey('ptpgo.ClientPhotos', blank=True, null=True)
-	rating                    = models.ForeignKey('ptpgo.ClientRatings', blank=True, null=True)
+	confirm_code              = models.CharField(max_length=1000, blank=True, null=True, default="")
 
 	registered                = models.DateTimeField('registered', default=timezone.now)
 	updated                   = models.DateTimeField('updated', default=timezone.now)
@@ -39,6 +35,7 @@ class Tokens(models.Model):
 
 	client                    = models.ForeignKey('ptpgo.Clients')
 	token                     = models.CharField(max_length=1000)
+	device_info               = models.CharField(max_length=1000, default="", blank=True, null=True)
 	last_login                = models.DateTimeField('last login', default=timezone.now)
 	last_activity             = models.DateTimeField('last activity', default=timezone.now)
 
@@ -66,18 +63,3 @@ class ClientRatings(models.Model):
 	rating                    = models.FloatField(default=0.0)
 	updated                   = models.DateTimeField('updated', default=timezone.now)
 
-class Country(models.Model):
-
-	class Meta:
-		verbose_name_plural = "Countries"
-
-	def __str__(self):
-		return str(self.id)
-
-class City(models.Model):
-
-	class Meta:
-		verbose_name_plural = "Cities"
-
-	def __str__(self):
-		return str(self.id)
