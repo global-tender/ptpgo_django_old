@@ -63,3 +63,146 @@ class ClientRatings(models.Model):
 	rating                    = models.FloatField(default=0.0)
 	updated                   = models.DateTimeField('updated', default=timezone.now)
 
+
+
+
+#######################################################################
+#######################################################################
+#######################################################################
+
+
+# Вид транспорта
+class CarType(models.Model):
+
+	class Meta:
+		verbose_name_plural = 'Вид транспорта'
+
+	def __str__(self):
+		return self.name
+
+	name                      = models.CharField(max_length=255) # пример: легковые
+
+
+
+# Марка автомобиля
+class CarMark(models.Model):
+
+	class Meta:
+		verbose_name_plural = 'Марка автомобиля'
+
+	def __str__(self):
+		return self.name
+
+	id_car_mark               = models.IntegerField(default=0)
+	name                      = models.CharField(max_length=255) # Название марки
+	name_rus                  = models.CharField(max_length=255, blank=True, null=True) # Название марки на русском
+
+	id_car_type               = models.ForeignKey('ptpgo.CarType') # Связь: Вид транспорта
+
+
+
+# Модель автомобиля
+class CarModel(models.Model):
+
+	class Meta:
+		verbose_name_plural = 'Модель автомобиля'
+
+	def __str__(self):
+		return self.name
+
+	id_car_model              = models.IntegerField(default=0)
+	name                      = models.CharField(max_length=255) # Название модели
+	name_rus                  = models.CharField(max_length=255, blank=True, null=True) # Название модели на русском
+
+	id_car_mark               = models.IntegerField(default=0) # Связь: Марка автомобиля
+
+
+
+# Поколение моделей
+class CarGeneration(models.Model):
+
+	class Meta:
+		verbose_name_plural = 'Поколение моделей'
+
+	def __str__(self):
+		return self.name
+
+	id_car_generation         = models.IntegerField(default=0)
+	name                      = models.CharField(max_length=255) # Название
+	year_begin                = models.CharField(max_length=255, default="", blank=True, null=True) # Год начала выпуска
+	year_end                  = models.CharField(max_length=255, default="", blank=True, null=True) # Год окончания выпуска
+
+	id_car_model              = models.IntegerField(default=0) # Связь: Модель автомобиля
+
+
+
+# Серия автомобиля
+class CarSerie(models.Model):
+
+	class Meta:
+		verbose_name_plural = 'Серия автомобиля'
+
+	def __str__(self):
+		return self.name
+
+	id_car_serie              = models.IntegerField(default=0)
+	name                      = models.CharField(max_length=255) # Название
+
+	id_car_model              = models.IntegerField(default=0) # Связь: Модель автомобиля
+	id_car_generation         = models.IntegerField(blank=True, null=True) # Связь: Поколение моделей
+
+
+
+# Модификация автомобиля
+class CarModification(models.Model):
+
+	class Meta:
+		verbose_name_plural = 'Модификация автомобиля'
+
+	def __str__(self):
+		return self.name
+
+	id_car_modification       = models.IntegerField(default=0)
+	name                      = models.CharField(max_length=255) # Название
+
+	start_production_year     = models.IntegerField(blank=True, null=True)
+	end_production_year       = models.IntegerField(blank=True, null=True)
+	price_min                 = models.IntegerField(blank=True, null=True)
+	price_max                 = models.IntegerField(blank=True, null=True)
+
+	id_car_model              = models.IntegerField(default=0) # Связь: Модель автомобиля
+	id_car_serie              = models.IntegerField(default=0) # Связь: Серия автомобиля
+
+
+
+# Значение характеристик автомобиля
+class CarCharacteristicValue(models.Model):
+
+	class Meta:
+		verbose_name_plural = 'Значение характеристик автомобиля'
+
+	def __str__(self):
+		return self.car_characteristic.name + ' | Модификация id: ' + str(self.car_modification.id)
+
+	id_car_characteristic_value = models.IntegerField(default=0)
+	value                     = models.CharField(max_length=255) # Значение
+	unit                      = models.CharField(max_length=255, blank=True, null=True) # Единица измерения
+
+	id_car_characteristic     = models.IntegerField(default=0) # Связь: Название характеристики
+	id_car_modification       = models.IntegerField(default=0) # Связь: Модификация автомобиля
+
+
+
+# Название характеристики автомобиля
+class CarCharacteristic(models.Model):
+
+	class Meta:
+		verbose_name_plural = 'Название характеристики'
+
+	def __str__(self):
+		return self.name
+
+	id_car_characteristic     = models.IntegerField(default=0)
+	name                      = models.CharField(max_length=255, blank=True, null=True) # Название
+	parent                    = models.IntegerField(blank=True, null=True)
+
