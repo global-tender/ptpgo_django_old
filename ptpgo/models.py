@@ -182,7 +182,7 @@ class CarCharacteristicValue(models.Model):
 		verbose_name_plural = 'Значение характеристик автомобиля'
 
 	def __str__(self):
-		return self.car_characteristic.name + ' | Модификация id: ' + str(self.car_modification.id)
+		return 'ID названия характеристики: ' + str(self.id_car_characteristic) + ' | Модификация id: ' + str(self.id_car_modification)
 
 	id_car_characteristic_value = models.IntegerField(default=0)
 	value                     = models.CharField(max_length=255) # Значение
