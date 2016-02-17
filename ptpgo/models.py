@@ -10,40 +10,51 @@ class Clients(models.Model):
 		verbose_name_plural = 'Клиенты: Аккаунт'
 
 	def __str__(self):
-		return self.email + '; id: ' + str(self.id)
+		return self.email + ' | id: ' + str(self.id)
 
 
-	email                     = models.CharField(max_length=100)
-	password                  = models.CharField(max_length=1000)
+	email                     = models.CharField(max_length=100) # E-Mail
+	password                  = models.CharField(max_length=1000) # Пароль
 
-	fio                       = models.CharField(max_length=255, blank=True, null=True)
-	about                     = models.TextField(blank=True, null=True)
+	first_name                = models.CharField(max_length=255, blank=True, null=True) # Имя
+	last_name                 = models.CharField(max_length=255, blank=True, null=True) # Фамилия
 
-	phone                     = models.CharField(max_length=255, blank=True, null=True)
-	additional_contacts       = models.CharField(max_length=1000, blank=True, null=True)
+	about                     = models.TextField(blank=True, null=True) # О себе
 
-	confirm_code              = models.CharField(max_length=255, blank=True, null=True, default="")
+	phone                     = models.CharField(max_length=255, blank=True, null=True) # Номер телефона, только цифры, без пробелов
+	additional_contacts       = models.CharField(max_length=1000, blank=True, null=True) # В свободной форме
 
-	response_time             = models.CharField(max_length=255, blank=True, null=True)
+	email_confirmed           = models.BooleanField(default=False) # Был ли подтвержден E-Mail
+	phone_confirmed           = models.BooleanField(default=False) # Был ли подтвержден номер телефона
 
-	registered                = models.DateTimeField('registered', default=timezone.now)
-	updated                   = models.DateTimeField('updated', default=timezone.now)
+	email_confirm_code        = models.CharField(max_length=255, blank=True, null=True) # Код потверждения E-Mail адреса
+	phone_confirm_code        = models.CharField(max_length=255, blank=True, null=True) # Код потверждения номер телефона
+
+	# Среднее время отклика на заказ, подсчитывается и изменяется по отклику
+	response_time             = models.CharField(max_length=32, blank=True, null=True)
+	# В процентах количество откликов на заказ (пример: 100%)
+	response_rate             = models.CharField(max_length=32, blank=True, null=True)
+
+	honors                    = models.IntegerField(default=0) # Награды - баллы
+
+	registered                = models.DateTimeField('registered', default=timezone.now) # Дата/время регистрации
+	updated                   = models.DateTimeField('updated', default=timezone.now) # Дата/время обновления данных пользователя, самим пользователем
 
 
 
 class Tokens(models.Model):
 
 	class Meta:
-		verbose_name_plural = "Клиенты: Токены авторизации"
+		verbose_name_plural = "Клиенты: Токены авторизации пользователей"
 
 	def __str__(self):
 		return self.client.email + ': ' + self.token
 
-	client                    = models.ForeignKey('ptpgo.Clients')
-	token                     = models.CharField(max_length=255)
-	device_info               = models.CharField(max_length=1000, default="", blank=True, null=True)
-	last_login                = models.DateTimeField('last login', default=timezone.now)
-	last_activity             = models.DateTimeField('last activity', default=timezone.now)
+	client                    = models.ForeignKey('ptpgo.Clients') # Связь: Клиент
+	token                     = models.CharField(max_length=255) # Токен авторизации
+	device_info               = models.CharField(max_length=1000, default="", blank=True, null=True) # Информация об устройстве пользователя
+	last_login                = models.DateTimeField('last login', default=timezone.now) # Дата/время авторизации
+	last_activity             = models.DateTimeField('last activity', default=timezone.now) # Дата/время активности: новый заказ, объявление или отзыв
 
 
 
@@ -55,9 +66,9 @@ class ClientPhotos(models.Model):
 	def __str__(self):
 		return 'id: ' + str(self.id) + '; client: ' + str(self.client.email)
 
-	client                    = models.ForeignKey('ptpgo.Clients')
-	photo                     = models.FileField(upload_to='client_photos/', blank=False, null=False)
-	timestamp                 = models.DateTimeField('added/updated', default=timezone.now)
+	client                    = models.ForeignKey('ptpgo.Clients') # Связь: Клиент
+	photo                     = models.FileField(upload_to='client_photos/', blank=False, null=False) # Фотография
+	timestamp                 = models.DateTimeField('added/updated', default=timezone.now) # Дата/время добавления фотографии
 
 
 
@@ -69,10 +80,10 @@ class ClientRatings(models.Model):
 	def __str__(self):
 		return self.client.email + ': ' + str(self.rating)
 
-	client                    = models.ForeignKey('ptpgo.Clients')
-	rating                    = models.FloatField(default=0.0)
-	rated_by                  = models.IntegerField(default=0)
-	timestamp                 = models.DateTimeField('added', default=timezone.now)
+	client                    = models.ForeignKey('ptpgo.Clients') # Кому поставили рейтинг
+	rating                    = models.FloatField(default=0.0) # Значение рейтинга (1-5)
+	rated_by                  = models.IntegerField(default=0) # Кто поставил рейтинг
+	timestamp                 = models.DateTimeField('added', default=timezone.now) # Когда поставили рейтинг
 
 
 
@@ -84,11 +95,11 @@ class ClientSiteNotifications(models.Model):
 	def __str__(self):
 		return self.notification_type + ' | client: ' + self.client.email
 
-	client                    = models.ForeignKey('ptpgo.Clients')
-	notification_type         = models.CharField(max_length=255)
-	notification_data         = models.CharField(max_length=255)
-	checked                   = models.BooleanField(default=False)
-	timestamp                 = models.DateTimeField('added', default=timezone.now)
+	client                    = models.ForeignKey('ptpgo.Clients') # Связь: Клиент
+	notification_type         = models.CharField(max_length=255) # Тип уведомления
+	notification_data         = models.CharField(max_length=255) # Содержание уведомления
+	checked                   = models.BooleanField(default=False) # Просмотрено ли уведомление
+	timestamp                 = models.DateTimeField('added', default=timezone.now) # Дата/время, когда уведомление появилось
 
 
 
@@ -100,12 +111,14 @@ class ClientNotificationsLog(models.Model):
 	def __str__(self):
 		return self.destination_system + ' | client: ' + self.client.email
 
-	client                    = models.ForeignKey('ptpgo.Clients')
-	notification_type         = models.CharField(max_length=255)
-	notification_data         = models.CharField(max_length=255)
-	destination_system        = models.CharField(max_length=255)
-	destination_details       = models.CharField(max_length=255)
-	timestamp                 = models.DateTimeField('added', default=timezone.now)
+	client                    = models.ForeignKey('ptpgo.Clients') # Связь: Клиент
+	notification_type         = models.CharField(max_length=255) # Тип уведомления
+	notification_data         = models.CharField(max_length=255) # Содержание уведомления
+	destination_system        = models.CharField(max_length=255) # Куда было направлено (сайт, email, sms)
+	destination_details       = models.CharField(max_length=255) # Данные получателя
+	timestamp                 = models.DateTimeField('added', default=timezone.now) # Дата/время уведомления
+
+
 
 #######################################################################
 #######################################################################
@@ -121,38 +134,41 @@ class ListBoat(models.Model):
 	def __str__(self):
 		return 'ID: ' + str(self.id) + ' | by ' + self.client.email
 
-	client                    = models.ForeignKey('ptpgo.Clients')
+	client                    = models.ForeignKey('ptpgo.Clients') # Связь: Клиент
 
-	boat_type                 = models.CharField(max_length=255, blank=True, null=True)
-	boat_builder              = models.CharField(max_length=255, blank=True, null=True)
-	boat_model                = models.CharField(max_length=255, blank=True, null=True)
-	boat_length               = models.CharField(max_length=255, blank=True, null=True)
-	boat_build_year           = models.CharField(max_length=32)
+	boat_type                 = models.CharField(max_length=255, blank=True, null=True) # Тип транспорта
+	boat_builder              = models.CharField(max_length=255, blank=True, null=True) # Производитель транспорта
+	boat_model                = models.CharField(max_length=255, blank=True, null=True) # Модель транспорта
+	boat_length               = models.CharField(max_length=255, blank=True, null=True) # Длина транспорта
+	boat_build_year           = models.CharField(max_length=32) # Год производства
 
-	location                  = models.CharField(max_length=1000, blank=True, null=True)
+	location                  = models.CharField(max_length=1000, blank=True, null=True) # Текущее местоположение
 
-	description               = models.CharField(max_length=10000, blank=True, null=True)
-	amenities                 = models.CharField(max_length=10000, blank=True, null=True) # удобства
+	description               = models.CharField(max_length=10000, blank=True, null=True) # Описание транспорта
+	amenities                 = models.CharField(max_length=10000, blank=True, null=True) # Удобства в свободной форме
 
-	guest_capacity            = models.IntegerField(default=0)
-	cabins                    = models.IntegerField(default=0)
-	single_beds               = models.IntegerField(default=0)
-	double_beds               = models.IntegerField(default=0)
+	guest_capacity            = models.IntegerField(default=0) # Количество людей (гостей)
+	cabins                    = models.IntegerField(default=0) # Количество кабин
+	single_beds               = models.IntegerField(default=0) # Количество односпальных кроватей
+	double_beds               = models.IntegerField(default=0) # Количество двуспальных кроватей
 
-	avail_date_ranges         = models.CharField(max_length=1000, blank=True, null=True)
-	not_avail_date_ranges     = models.CharField(max_length=1000, blank=True, null=True)
+	engines_amount            = models.IntegerField(default=0) # Количество моторов
+	horsepower_per_engine     = models.CharField(max_length=32, blank=True, null=True) # Лошадиных сил на мотор
+	speed_per_hour            = models.CharField(max_length=32, blank=True, null=True) # Скорость в час
 
-	with_captain              = models.BooleanField(default=True)
-	fuel_included             = models.BooleanField(default=True)
+	avail_date_ranges         = models.CharField(max_length=1000, blank=True, null=True) # Доступные диапазоны дат в UTC
 
-	day_price                 = models.CharField(max_length=255, blank=True, null=True)
-	week_price                = models.CharField(max_length=255, blank=True, null=True)
-	month_price               = models.CharField(max_length=255, blank=True, null=True)
+	with_captain              = models.BooleanField(default=True) # С капитаном
+	fuel_included             = models.BooleanField(default=True) # Топливо включено
 
-	canceled                  = models.BooleanField(default=False)
+	#
+	# место для хранения цен
+	#
 
-	timestamp_edited          = models.DateTimeField('date updated', default=timezone.now)
-	timestamp_added           = models.DateTimeField('date listed', default=timezone.now)
+	canceled                  = models.BooleanField(default=False) # Объявление отменено
+
+	timestamp_edited          = models.DateTimeField('date updated', default=timezone.now) # Дата/время редактирования
+	timestamp_added           = models.DateTimeField('date listed', default=timezone.now) # Дата/время добавления
 
 
 
@@ -164,18 +180,66 @@ class ListBoatPhotos(models.Model):
 	def __str__(self):
 		return 'Объявление id: ' + str(self.boat.id)
 
-	boat                      = models.ForeignKey('ptpgo.ListBoat')
-	photo                     = models.FileField(upload_to='boat_photos/', blank=False, null=False)
-	timestamp                 = models.DateTimeField('added', default=timezone.now)
+	boat                      = models.ForeignKey('ptpgo.ListBoat') # Связь: Объявление - водный транспорт
+	photo                     = models.FileField(upload_to='boat_photos/', blank=False, null=False) # Фотография
+	timestamp                 = models.DateTimeField('added', default=timezone.now) # Дата/время добавления фотографии
 
 
 
 
-# class Orders(models.Model):
-# 	pass
+class OrderBoat(models.Model):
 
-# class Reviews(models.Model):
-# 	pass
+	class Meta:
+		verbose_name_plural = 'Заказы: Аренда водного транспорта'
+
+	def __str__(self):
+		return 'Номер заказа: ' + str(self.id) + '  |  Клиент: ' + self.client.email
+
+	# ID этой модели: номер заказа
+	client                    = models.ForeignKey('ptpgo.Clients') # Связь: Клиент
+	boat                      = models.ForeignKey('ptpgo.ListBoat') # Связь: Объявление - водный транспорт
+	date_range_selected       = models.CharField(max_length=1000) # Выбранные диапазоны дат в UTC
+
+	# Статус заказа:
+	# 	Принят в обработку
+	# 	Отменен владельцем
+	# 	Отменен заказчиком
+	# 	Арендован
+	# 	Сделка завершена
+	# 	Сделка провалена
+	status_order              = models.CharField(max_length=255)
+
+	# Статус оплаты:
+	# 	Не оплачено
+	# 	Оплачено
+	# 	Заказан возврат средств
+	# 	Возврат средств подтвержден владельцем
+	# 	Средства возвращены
+	status_payment            = models.CharField(max_length=255)
+
+	status_cancel_reason      = models.CharField(max_length=1000, blank=True, null=True) # Причина отмены заказа (владельцем или заказчиком)
+	status_fail_reason        = models.CharField(max_length=1000, blank=True, null=True) # Причина провала, если указана (владельцем)
+
+	timestamp                 = models.DateTimeField('order date/time', default=timezone.now) # Дата/время заказа
+
+
+
+class Reviews(models.Model):
+
+	class Meta:
+		verbose_name_plural = 'Заказы: Отзывы по сделке'
+
+	def __str__(self):
+		return 'Отзыв от: ' + self.client.email
+
+	client                    = models.ForeignKey('ptpgo.Clients') # Связь: Клиент, кто делает отзыв
+	review_for                = models.IntegerField(default=0) # ID пользователя, которому пишут отзыв
+
+	content                   = models.CharField(max_length=10000) # Содержимое отзыва
+
+	timestamp                 = models.DateTimeField('review added date/time', default=timezone.now) # Дата/время добавления отзыва
+
+
 
 #######################################################################
 #######################################################################
@@ -205,7 +269,7 @@ class CarMark(models.Model):
 	def __str__(self):
 		return self.name
 
-	id_car_mark               = models.IntegerField(default=0)
+	id_car_mark               = models.IntegerField(default=0) # ID марки
 	name                      = models.CharField(max_length=255) # Название марки
 	name_rus                  = models.CharField(max_length=255, blank=True, null=True) # Название марки на русском
 
@@ -222,7 +286,7 @@ class CarModel(models.Model):
 	def __str__(self):
 		return self.name
 
-	id_car_model              = models.IntegerField(default=0)
+	id_car_model              = models.IntegerField(default=0) # ID модели
 	name                      = models.CharField(max_length=255) # Название модели
 	name_rus                  = models.CharField(max_length=255, blank=True, null=True) # Название модели на русском
 
@@ -239,7 +303,7 @@ class CarGeneration(models.Model):
 	def __str__(self):
 		return self.name
 
-	id_car_generation         = models.IntegerField(default=0)
+	id_car_generation         = models.IntegerField(default=0) # ID поколения
 	name                      = models.CharField(max_length=255) # Название
 	year_begin                = models.CharField(max_length=255, default="", blank=True, null=True) # Год начала выпуска
 	year_end                  = models.CharField(max_length=255, default="", blank=True, null=True) # Год окончания выпуска
@@ -257,7 +321,7 @@ class CarSerie(models.Model):
 	def __str__(self):
 		return self.name
 
-	id_car_serie              = models.IntegerField(default=0)
+	id_car_serie              = models.IntegerField(default=0) # ID серии
 	name                      = models.CharField(max_length=255) # Название
 
 	id_car_model              = models.IntegerField(default=0) # Связь: Модель автомобиля
@@ -274,13 +338,13 @@ class CarModification(models.Model):
 	def __str__(self):
 		return self.name
 
-	id_car_modification       = models.IntegerField(default=0)
+	id_car_modification       = models.IntegerField(default=0) # ID модификации
 	name                      = models.CharField(max_length=255) # Название
 
-	start_production_year     = models.IntegerField(blank=True, null=True)
-	end_production_year       = models.IntegerField(blank=True, null=True)
-	price_min                 = models.IntegerField(blank=True, null=True)
-	price_max                 = models.IntegerField(blank=True, null=True)
+	start_production_year     = models.IntegerField(blank=True, null=True) # Год начала производства
+	end_production_year       = models.IntegerField(blank=True, null=True) # Год окончания производства
+	price_min                 = models.IntegerField(blank=True, null=True) # Минимальная цена
+	price_max                 = models.IntegerField(blank=True, null=True) # Максимальная цена
 
 	id_car_model              = models.IntegerField(default=0) # Связь: Модель автомобиля
 	id_car_serie              = models.IntegerField(default=0) # Связь: Серия автомобиля
@@ -296,7 +360,7 @@ class CarCharacteristicValue(models.Model):
 	def __str__(self):
 		return 'ID названия характеристики: ' + str(self.id_car_characteristic) + ' | Модификация id: ' + str(self.id_car_modification)
 
-	id_car_characteristic_value = models.IntegerField(default=0)
+	id_car_characteristic_value = models.IntegerField(default=0) # ID значения характеристики
 	value                     = models.CharField(max_length=255) # Значение
 	unit                      = models.CharField(max_length=255, blank=True, null=True) # Единица измерения
 
@@ -314,7 +378,7 @@ class CarCharacteristic(models.Model):
 	def __str__(self):
 		return self.name
 
-	id_car_characteristic     = models.IntegerField(default=0)
+	id_car_characteristic     = models.IntegerField(default=0) # ID названия характеристики
 	name                      = models.CharField(max_length=255, blank=True, null=True) # Название
-	parent                    = models.IntegerField(blank=True, null=True)
+	parent                    = models.IntegerField(blank=True, null=True) # ID родительской характеристики
 
