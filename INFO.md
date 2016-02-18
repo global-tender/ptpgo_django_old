@@ -35,23 +35,23 @@ gunicorn system.wsgi -w 7 -t 1000 --log-file=/path/to/logs/ptpgo-backend.gunicor
 
 ```
 server {
-		listen         80;
-		server_name    ptpgo.ihptru.net;
-		return         301 https://$server_name$request_uri;
+	   listen         80;
+	   server_name    api.ptpgo.com api.ptpgo.ru;
+	   return         301 https://$server_name$request_uri;
 }
 
 server {
 		listen 443 ssl;
 
-		ssl_certificate /etc/letsencrypt/live/ptpgo.ihptru.net/fullchain.pem;
-		ssl_certificate_key /etc/letsencrypt/live/ptpgo.ihptru.net/privkey.pem;
+		ssl_certificate /etc/letsencrypt/live/api.ptpgo.com/fullchain.pem;
+		ssl_certificate_key /etc/letsencrypt/live/api.ptpgo.com/privkey.pem;
 
-		server_name ptpgo.ihptru.net;
+		server_name api.ptpgo.com;
 
-		access_log /path/to/logs/ptpgo-backend.access.log;
-		error_log /path/to/logs/ptpgo-backend.error.log;
+		access_log /data/global-tender/logs/ptpgo-backend.access.log;
+		error_log /data/global-tender/logs/ptpgo-backend.error.log;
 
-		root /path/to/ptpgo/app/name/;
+		root /data/global-tender/ptpgo-backend/www/ptpgo/;
 
 		location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
 				expires 10d;
@@ -75,17 +75,79 @@ server {
 			application/javascript
 			application/x-javascript
 			application/json
+			application/vnd.api+json
 			application/xml
 			application/xml+rss;
 
 
 		location /static/ { # STATIC_URL
-				alias /path/to/ptpgo/app/name/static/; # STATIC_ROOT
+				alias /data/global-tender/ptpgo-backend/www/ptpgo/static/; # STATIC_ROOT
 				expires 30d;
 		}
 
 		location = /favicon.ico {
-				alias /path/to/ptpgo/app/name/static/favicon.png;
+				alias /data/global-tender/ptpgo-backend/www/ptpgo/static/favicon.png;
+		}
+
+		location / {
+				proxy_pass_header Server;
+				proxy_set_header Host $http_host;
+				proxy_redirect off;
+				proxy_set_header X-Real-IP $remote_addr;
+				proxy_set_header X-Scheme $scheme;
+				proxy_connect_timeout 120;
+				proxy_read_timeout 1000;
+				proxy_pass http://127.0.0.1:9292/;
+		}
+}
+
+server {
+		listen 443 ssl;
+
+		ssl_certificate /etc/letsencrypt/live/api.ptpgo.ru/fullchain.pem;
+		ssl_certificate_key /etc/letsencrypt/live/api.ptpgo.ru/privkey.pem;
+
+		server_name api.ptpgo.ru;
+
+		access_log /data/global-tender/logs/ptpgo-backend.access.log;
+		error_log /data/global-tender/logs/ptpgo-backend.error.log;
+
+		root /data/global-tender/ptpgo-backend/www/ptpgo/;
+
+		location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
+				expires 10d;
+				add_header Pragma public;
+				add_header Cache-Control "public";
+		}
+
+		gzip on;
+		gzip_disable "msie6";
+
+		gzip_comp_level 6;
+		gzip_min_length 1100;
+		gzip_buffers 16 8k;
+		gzip_proxied any;
+		gzip_types
+			text/plain
+			text/css
+			text/js
+			text/xml
+			text/javascript
+			application/javascript
+			application/x-javascript
+			application/json
+			application/vnd.api+json
+			application/xml
+			application/xml+rss;
+
+
+		location /static/ { # STATIC_URL
+				alias /data/global-tender/ptpgo-backend/www/ptpgo/static/; # STATIC_ROOT
+				expires 30d;
+		}
+
+		location = /favicon.ico {
+				alias /data/global-tender/ptpgo-backend/www/ptpgo/static/favicon.png;
 		}
 
 		location / {
