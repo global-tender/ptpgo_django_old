@@ -35,9 +35,15 @@ gunicorn system.wsgi -w 7 -t 1000 --log-file=/path/to/logs/ptpgo-backend.gunicor
 
 ```
 server {
-	   listen         80;
-	   server_name    api.ptpgo.com api.ptpgo.ru;
-	   return         301 https://$server_name$request_uri;
+		listen          80;
+		server_name     api.ptpgo.com;
+		return          301 https://$server_name$request_uri;
+}
+
+server {
+		listen          80;
+		server_name     api.ptpgo.ru;
+		return          301 https://$server_name$request_uri;
 }
 
 server {
