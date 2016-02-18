@@ -10,6 +10,10 @@ from ptpgo.models import ClientNotificationsLog
 from ptpgo.models import ListBoat
 from ptpgo.models import ListBoatPhotos
 
+from ptpgo.models import OrderBoat
+
+from ptpgo.models import Reviews
+
 from ptpgo.models import CarType, CarMark, CarModel, CarGeneration, CarSerie, CarModification, CarCharacteristic, CarCharacteristicValue
 
 admin.site.register(Clients)
@@ -34,3 +38,6 @@ admin.site.register(ClientNotificationsLog)
 
 admin.site.register(ListBoat)
 admin.site.register(ListBoatPhotos)
+
+admin.site.register(OrderBoat)
+admin.site.register(Reviews)

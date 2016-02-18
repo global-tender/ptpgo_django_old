@@ -1,14 +1,14 @@
 from django.conf.urls import url, include
 
-from ptpgo import views
+from ptpgo import views, views_client
 
 urlpatterns = [
-	url(r'^rest/?$', views.rest_home, name='rest_home'),
+	url(r'^rest/?$', views.rest_index, name='rest_index'),
 
-	url(r'^rest/authenticate/?$', views.authenticate, name='authenticate'),
-	url(r'^rest/check_auth/?$', views.check_auth, name='check_auth'),
-	url(r'^rest/register/?$', views.register, name='register'),
-	url(r'^rest/confirm_register/?$', views.confirm_register, name='confirm_register'),
+	url(r'^rest/authenticate/?$', views_client.authenticate, name='authenticate'),
+	url(r'^rest/check_auth/?$', views_client.check_auth, name='check_auth'),
+	url(r'^rest/register_with_email/?$', views_client.register_with_email, name='register_with_email'),
+	url(r'^rest/confirm_email/?$', views_client.confirm_email, name='confirm_email'),
 	
-	url(r'^$', views.home, name='home'),
+	url(r'^$', views.index, name='index'),
 ]

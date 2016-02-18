@@ -10,19 +10,25 @@ class Clients(models.Model):
 		verbose_name_plural = 'Клиенты: Аккаунт'
 
 	def __str__(self):
-		return self.email + ' | id: ' + str(self.id)
+		return 'id: ' + str(self.id)
 
-
-	email                     = models.CharField(max_length=100) # E-Mail
-	password                  = models.CharField(max_length=1000) # Пароль
+	email                     = models.CharField(max_length=100, blank=True, null=True) # E-Mail
+	password                  = models.CharField(max_length=1000, blank=True, null=True) # Пароль
 
 	first_name                = models.CharField(max_length=255, blank=True, null=True) # Имя
 	last_name                 = models.CharField(max_length=255, blank=True, null=True) # Фамилия
 
+	# Регистрация/Авторизация через соц. сети
+	facebook_id               = models.CharField(max_length=255, blank=True, null=True) # Связь: Facebook
+	google_plus_id            = models.CharField(max_length=255, blank=True, null=True) # Связь: Google Plus
+	vk_id                     = models.CharField(max_length=255, blank=True, null=True) # Связь: VK
+
+
+
 	about                     = models.TextField(blank=True, null=True) # О себе
 
 	phone                     = models.CharField(max_length=255, blank=True, null=True) # Номер телефона, только цифры, без пробелов
-	additional_contacts       = models.CharField(max_length=1000, blank=True, null=True) # В свободной форме
+	additional_contacts       = models.CharField(max_length=1000, blank=True, null=True) # Дополнительные контакты, в свободной форме
 
 	email_confirmed           = models.BooleanField(default=False) # Был ли подтвержден E-Mail
 	phone_confirmed           = models.BooleanField(default=False) # Был ли подтвержден номер телефона
@@ -55,6 +61,33 @@ class Tokens(models.Model):
 	device_info               = models.CharField(max_length=1000, default="", blank=True, null=True) # Информация об устройстве пользователя
 	last_login                = models.DateTimeField('last login', default=timezone.now) # Дата/время авторизации
 	last_activity             = models.DateTimeField('last activity', default=timezone.now) # Дата/время активности: новый заказ, объявление или отзыв
+
+
+
+class AuthFacebook(models.Model):
+
+	facebook_id               = models.CharField(max_length=255) # Связь с аккаунтом
+	# other fields here
+
+
+
+class AuthGooglePlus(models.Model):
+
+	google_plus_id            = models.CharField(max_length=255) # Связь с аккаунтом
+	# other fields here
+
+
+
+class AuthVk(models.Model):
+
+	vk_id                     = models.CharField(max_length=255) # Связь с аккаунтом
+	# other fields here
+
+
+
+#######################################################################
+#######################################################################
+#######################################################################
 
 
 
