@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.core import mail
 
-from ptpgo.models import Clients, Tokens, AuthFacebook, AuthGooglePlus, AuthVk
+from ptpgo.models import Clients, Tokens, AuthVk
 from ptpgo.functions import utility
 
 
@@ -54,122 +54,6 @@ def authenticate(request):
 				json_resp['status'] = False
 				json_resp['responseText'] = 'incorrect authentication data'
 				return utility.default_response(json_resp, 200)
-
-		elif facebook_id:
-
-			fb_account = AuthFacebook.objects.filter(facebook_id=facebook_id).first()
-			client = Clients.objects.filter(facebook_id=facebook_id).first()
-
-			if fb_account and client:
-
-				# Authenticate
-
-				token = Tokens(
-					client = client,
-					token = binascii.hexlify(os.urandom(25)).decode('utf-8'),
-				)
-				token.save()
-
-				json_resp['status'] = True
-				json_resp['response'] = {
-					'token': token.token,
-				}
-				json_resp['responseText'] = 'Authenticated. Use provided token to keep session active'
-				return utility.default_response(json_resp, status=201)
-
-			else:
-
-				# Register new user
-
-				if fb_account:
-					AuthFacebook.objects.filter(facebook_id=facebook_id).delete()
-
-				if client:
-					json_resp['status'] = False
-					json_resp['responseText'] = 'Social auth: failed to register new user. Client with such facebook_id already exists'
-					return utility.default_response(json_resp, status=200)
-
-				client = Clients(
-					facebook_id = facebook_id,
-				)
-				client.save()
-
-				fb_account = AuthFacebook(
-					facebook_id = facebook_id,
-				)
-				fb_account.save()
-
-				# Authenticate
-				token = Tokens(
-					client = client,
-					token = binascii.hexlify(os.urandom(25)).decode('utf-8'),
-				)
-				token.save()
-
-				json_resp['status'] = True
-				json_resp['response'] = {
-					'token': token.token,
-				}
-				json_resp['responseText'] = 'Social auth (facebook): registered new user. Use provided token to keep session active'
-				return utility.default_response(json_resp, status=201)
-
-		elif google_plus_id:
-
-			google_account = AuthGooglePlus.objects.filter(google_plus_id=google_plus_id).first()
-			client = Clients.objects.filter(google_plus_id=google_plus_id).first()
-
-			if google_account and client:
-
-				# Authenticate
-
-				token = Tokens(
-					client = client,
-					token = binascii.hexlify(os.urandom(25)).decode('utf-8'),
-				)
-				token.save()
-
-				json_resp['status'] = True
-				json_resp['response'] = {
-					'token': token.token,
-				}
-				json_resp['responseText'] = 'Authenticated. Use provided token to keep session active'
-				return utility.default_response(json_resp, status=201)
-
-			else:
-
-				# Register new user
-
-				if google_account:
-					AuthGooglePlus.objects.filter(google_plus_id=google_plus_id).delete()
-
-				if client:
-					json_resp['status'] = False
-					json_resp['responseText'] = 'Social auth: failed to register new user. Client with such google_plus_id already exists'
-					return utility.default_response(json_resp, status=200)
-
-				client = Clients(
-					google_plus_id = google_plus_id,
-				)
-				client.save()
-
-				google_account = AuthGooglePlus(
-					google_plus_id = google_plus_id,
-				)
-				google_account.save()
-
-				# Authenticate
-				token = Tokens(
-					client = client,
-					token = binascii.hexlify(os.urandom(25)).decode('utf-8'),
-				)
-				token.save()
-
-				json_resp['status'] = True
-				json_resp['response'] = {
-					'token': token.token,
-				}
-				json_resp['responseText'] = 'Social auth (google plus): registered new user. Use provided token to keep session active'
-				return utility.default_response(json_resp, status=201)
 
 		elif vk_id:
 

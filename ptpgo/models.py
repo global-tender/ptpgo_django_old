@@ -19,8 +19,6 @@ class Clients(models.Model):
 	last_name                 = models.CharField(max_length=255, blank=True, null=True) # Фамилия
 
 	# Регистрация/Авторизация через соц. сети
-	facebook_id               = models.CharField(max_length=255, blank=True, null=True) # Связь: Facebook
-	google_plus_id            = models.CharField(max_length=255, blank=True, null=True) # Связь: Google Plus
 	vk_id                     = models.CharField(max_length=255, blank=True, null=True) # Связь: VK
 
 
@@ -61,20 +59,6 @@ class Tokens(models.Model):
 	device_info               = models.CharField(max_length=1000, default="", blank=True, null=True) # Информация об устройстве пользователя
 	last_login                = models.DateTimeField('last login', default=timezone.now) # Дата/время авторизации
 	last_activity             = models.DateTimeField('last activity', default=timezone.now) # Дата/время активности: новый заказ, объявление или отзыв
-
-
-
-class AuthFacebook(models.Model):
-
-	facebook_id               = models.CharField(max_length=255) # Связь с аккаунтом
-	# other fields here
-
-
-
-class AuthGooglePlus(models.Model):
-
-	google_plus_id            = models.CharField(max_length=255) # Связь с аккаунтом
-	# other fields here
 
 
 

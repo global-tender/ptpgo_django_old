@@ -135,7 +135,7 @@ STATIC_URL = '/static/'
 EMAIL_HOST='127.0.0.1'
 
 # Email address (FROM) in our custom mail methods
-SYSTEM_EMAIL_FROM = 'ptpgo <ptpgo@ihptru.net>'
+SYSTEM_EMAIL_FROM = 'ptpgo <system@ptpgo.com>'
 
 # Reply-to email address
-DEFAULT_FROM_EMAIL = 'ptpgo <ptpgo@ihptru.net>'
+DEFAULT_FROM_EMAIL = 'ptpgo <system@ptpgo.com>'
