@@ -27,8 +27,6 @@ def authenticate(request):
 		email = request.POST.get('email', None)
 		password = request.POST.get('password', None)
 
-		facebook_id = request.POST.get('facebook_id', None)
-		google_plus_id = request.POST.get('google_plus_id', None)
 		vk_id = request.POST.get('vk_id', None)
 
 		if email and password:
