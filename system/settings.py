@@ -139,3 +139,10 @@ SYSTEM_EMAIL_FROM = 'ptpgo <system@ptpgo.com>'
 
 # Reply-to email address
 DEFAULT_FROM_EMAIL = 'ptpgo <system@ptpgo.com>'
+
+
+
+### Social Auth ###
+VK_CLIENT_ID = '5316931'
+VK_CLIENT_SECRET = 'rqyIYBgFRbNw7Uddg635'
+VK_REDIRECT_URI = 'https://api.ptpgo.com/socauth/vk/'

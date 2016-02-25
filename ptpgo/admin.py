@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from ptpgo.models import Clients
 from ptpgo.models import Tokens
+from ptpgo.models import AuthVk
 from ptpgo.models import ClientPhotos
 from ptpgo.models import ClientRatings
 from ptpgo.models import ClientSiteNotifications
@@ -18,6 +19,7 @@ from ptpgo.models import CarType, CarMark, CarModel, CarGeneration, CarSerie, Ca
 
 admin.site.register(Clients)
 admin.site.register(Tokens)
+admin.site.register(AuthVk)
 admin.site.register(ClientPhotos)
 admin.site.register(ClientRatings)
 

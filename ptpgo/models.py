@@ -19,7 +19,7 @@ class Clients(models.Model):
 	last_name                 = models.CharField(max_length=255, blank=True, null=True) # Фамилия
 
 	# Регистрация/Авторизация через соц. сети
-	vk_id                     = models.CharField(max_length=255, blank=True, null=True) # Связь: VK
+	vk_user_id                = models.CharField(max_length=255, blank=True, null=True) # Связь: VK
 
 
 
@@ -52,7 +52,7 @@ class Tokens(models.Model):
 		verbose_name_plural = "Клиенты: Токены авторизации пользователей"
 
 	def __str__(self):
-		return self.client.email + ': ' + self.token
+		return str(self.client.id) + ': ' + self.token
 
 	client                    = models.ForeignKey('ptpgo.Clients') # Связь: Клиент
 	token                     = models.CharField(max_length=255) # Токен авторизации
@@ -64,8 +64,22 @@ class Tokens(models.Model):
 
 class AuthVk(models.Model):
 
-	vk_id                     = models.CharField(max_length=255) # Связь с аккаунтом
-	# other fields here
+	class Meta:
+		verbose_name_plural = 'Клиенты: Авторизация через vk.com'
+
+	def __str__(self):
+		return 'user_id: ' + self.vk_user_id
+
+	vk_user_id                = models.CharField(max_length=255) # Связь с аккаунтом
+	email                     = models.CharField(max_length=255, blank=True, null=True)
+
+	access_token              = models.CharField(max_length=255, default="") # Токен доступа к данным пользователя
+	expires_in                = models.CharField(max_length=255, default="") # Время жизни токена доступа
+
+	profile                   = models.CharField(max_length=10000, blank=True, null=True) # json данных пользователя
+
+	updated                   = models.DateTimeField('updated', default=timezone.now) # Дата/время обновления данных пользователя, при повторной авторизации
+
 
 
 
