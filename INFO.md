@@ -1,6 +1,6 @@
 
 ```
-Developed using Python 3.4.3, Django 1.9.1
+Developed using Python 3.4.3, Django 1.9.4
 Database is PostgreSQL 9.1
 ```
 
@@ -28,143 +28,144 @@ $ pip install -r requirements.txt
 ####Running gunicorn (WSGI HTTP Server) this way (7 instances, max timeout 1000 seconds):
 
 ```
-gunicorn system.wsgi -w 7 -t 1000 --log-file=/path/to/logs/ptpgo-backend.gunicorn.log -b 127.0.0.1:9292
+gunicorn ptpgo.wsgi -w 7 -t 1000 --log-file=/path/to/logs/ptpgo.gunicorn.log -b 127.0.0.1:9292
 ```
 
 ####Nginx config for our virtual host (replace PATH where needed):
 
 ```
 server {
-		listen          80;
-		server_name     api.ptpgo.com;
-		return          301 https://$server_name$request_uri;
+	listen		80;
+	server_name	ptpgo.com www.ptpgo.com;
+	return		301 https://$server_name$request_uri;
 }
 
 server {
-		listen          80;
-		server_name     api.ptpgo.ru;
-		return          301 https://$server_name$request_uri;
+	listen		80;
+	server_name	ptpgo.ru www.ptpgo.ru;
+	return		301 https://$server_name$request_uri;
 }
 
 server {
-		listen 443 ssl;
+	listen 443 ssl;
 
-		ssl_certificate /etc/letsencrypt/live/api.ptpgo.com/fullchain.pem;
-		ssl_certificate_key /etc/letsencrypt/live/api.ptpgo.com/privkey.pem;
+	ssl_certificate /etc/letsencrypt/live/ptpgo.com/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/ptpgo.com/privkey.pem;
 
-		server_name api.ptpgo.com;
+	server_name ptpgo.com www.ptpgo.com;
 
-		access_log /data/global-tender/logs/ptpgo-backend.access.log;
-		error_log /data/global-tender/logs/ptpgo-backend.error.log;
+	access_log /data/global-tender/ptpgo/ptpgo.access.log;
+	error_log /data/global-tender/ptpgo/ptpgo.error.log;
 
-		root /data/global-tender/ptpgo-backend/www/ptpgo/;
+	root /data/global-tender/ptpgo/www/ptpgo/;
 
-		location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
-				expires 10d;
-				add_header Pragma public;
-				add_header Cache-Control "public";
-		}
+	location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
+		expires 10d;
+		add_header Pragma public;
+		add_header Cache-Control "public";
+	}
 
-		gzip on;
-		gzip_disable "msie6";
+	gzip on;
+	gzip_disable "msie6";
 
-		gzip_comp_level 6;
-		gzip_min_length 1100;
-		gzip_buffers 16 8k;
-		gzip_proxied any;
-		gzip_types
-			text/plain
-			text/css
-			text/js
-			text/xml
-			text/javascript
-			application/javascript
-			application/x-javascript
-			application/json
-			application/vnd.api+json
-			application/xml
-			application/xml+rss;
+	gzip_comp_level 6;
+	gzip_min_length 1100;
+	gzip_buffers 16 8k;
+	gzip_proxied any;
+	gzip_types
+		text/plain
+		text/css
+		text/js
+		text/xml
+		text/javascript
+		application/javascript
+		application/x-javascript
+		application/json
+		application/vnd.api+json
+		application/xml
+		application/xml+rss;
 
 
-		location /static/ { # STATIC_URL
-				alias /data/global-tender/ptpgo-backend/www/ptpgo/static/; # STATIC_ROOT
-				expires 30d;
-		}
+	location /static/ { # STATIC_URL
+		alias /data/global-tender/ptpgo/www/ptpgo/static/; # STATIC_ROOT
+		expires 30d;
+	}
 
-		location = /favicon.ico {
-				alias /data/global-tender/ptpgo-backend/www/ptpgo/static/favicon.png;
-		}
+	location = /favicon.ico {
+		alias /data/global-tender/ptpgo/www/ptpgo/static/favicon.png;
+	}
 
-		location / {
-				proxy_pass_header Server;
-				proxy_set_header Host $http_host;
-				proxy_redirect off;
-				proxy_set_header X-Real-IP $remote_addr;
-				proxy_set_header X-Scheme $scheme;
-				proxy_connect_timeout 120;
-				proxy_read_timeout 1000;
-				proxy_pass http://127.0.0.1:9292/;
-		}
+	location / {
+		proxy_pass_header Server;
+		proxy_set_header Host $http_host;
+		proxy_redirect off;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Scheme $scheme;
+		proxy_connect_timeout 120;
+		proxy_read_timeout 1000;
+		proxy_pass http://127.0.0.1:9292/;
+	}
 }
 
+
 server {
-		listen 443 ssl;
+	listen 443 ssl;
 
-		ssl_certificate /etc/letsencrypt/live/api.ptpgo.ru/fullchain.pem;
-		ssl_certificate_key /etc/letsencrypt/live/api.ptpgo.ru/privkey.pem;
+	ssl_certificate /etc/letsencrypt/live/ptpgo.ru/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/ptpgo.ru/privkey.pem;
 
-		server_name api.ptpgo.ru;
+	server_name ptpgo.ru www.ptpgo.ru;
 
-		access_log /data/global-tender/logs/ptpgo-backend.access.log;
-		error_log /data/global-tender/logs/ptpgo-backend.error.log;
+	access_log /data/global-tender/ptpgo/ptpgo.access.log;
+	error_log /data/global-tender/ptpgo/ptpgo.error.log;
 
-		root /data/global-tender/ptpgo-backend/www/ptpgo/;
+	root /data/global-tender/ptpgo/www/ptpgo/;
 
-		location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
-				expires 10d;
-				add_header Pragma public;
-				add_header Cache-Control "public";
-		}
+	location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
+		expires 10d;
+		add_header Pragma public;
+		add_header Cache-Control "public";
+	}
 
-		gzip on;
-		gzip_disable "msie6";
+	gzip on;
+	gzip_disable "msie6";
 
-		gzip_comp_level 6;
-		gzip_min_length 1100;
-		gzip_buffers 16 8k;
-		gzip_proxied any;
-		gzip_types
-			text/plain
-			text/css
-			text/js
-			text/xml
-			text/javascript
-			application/javascript
-			application/x-javascript
-			application/json
-			application/vnd.api+json
-			application/xml
-			application/xml+rss;
+	gzip_comp_level 6;
+	gzip_min_length 1100;
+	gzip_buffers 16 8k;
+	gzip_proxied any;
+	gzip_types
+		text/plain
+		text/css
+		text/js
+		text/xml
+		text/javascript
+		application/javascript
+		application/x-javascript
+		application/json
+		application/vnd.api+json
+		application/xml
+		application/xml+rss;
 
 
-		location /static/ { # STATIC_URL
-				alias /data/global-tender/ptpgo-backend/www/ptpgo/static/; # STATIC_ROOT
-				expires 30d;
-		}
+	location /static/ { # STATIC_URL
+		alias /data/global-tender/ptpgo/www/ptpgo/static/; # STATIC_ROOT
+		expires 30d;
+	}
 
-		location = /favicon.ico {
-				alias /data/global-tender/ptpgo-backend/www/ptpgo/static/favicon.png;
-		}
+	location = /favicon.ico {
+		alias /data/global-tender/ptpgo/www/ptpgo/static/favicon.png;
+	}
 
-		location / {
-				proxy_pass_header Server;
-				proxy_set_header Host $http_host;
-				proxy_redirect off;
-				proxy_set_header X-Real-IP $remote_addr;
-				proxy_set_header X-Scheme $scheme;
-				proxy_connect_timeout 120;
-				proxy_read_timeout 1000;
-				proxy_pass http://127.0.0.1:9292/;
-		}
+	location / {
+		proxy_pass_header Server;
+		proxy_set_header Host $http_host;
+		proxy_redirect off;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Scheme $scheme;
+		proxy_connect_timeout 120;
+		proxy_read_timeout 1000;
+		proxy_pass http://127.0.0.1:9292/;
+	}
 }
 ```

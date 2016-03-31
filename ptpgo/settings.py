@@ -22,14 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ptp0+9i3&3y1gtb$s8j5c8irlp9hf*86py4kckk00tx8alesas799go'
 
-#########
-#########
-
-REST_TOKEN = 'uu3OhdopDeiroop6ou6eiFiBquei7EYoIethei4mEec6Aax5eeshoB4a'
-
-#########
-#########
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -59,7 +51,7 @@ MIDDLEWARE_CLASSES = [
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'system.urls'
+ROOT_URLCONF = 'ptpgo.urls'
 
 TEMPLATES = [
 	{
@@ -77,7 +69,7 @@ TEMPLATES = [
 	},
 ]
 
-WSGI_APPLICATION = 'system.wsgi.application'
+WSGI_APPLICATION = 'ptpgo.wsgi.application'
 
 
 # Database
@@ -129,7 +121,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-
 STATIC_URL = '/static/'
 
 EMAIL_HOST='127.0.0.1'
@@ -139,10 +130,3 @@ SYSTEM_EMAIL_FROM = 'ptpgo <system@ptpgo.com>'
 
 # Reply-to email address
 DEFAULT_FROM_EMAIL = 'ptpgo <system@ptpgo.com>'
-
-
-
-### Social Auth ###
-VK_CLIENT_ID = '5316931'
-VK_CLIENT_SECRET = 'rqyIYBgFRbNw7Uddg635'
-VK_REDIRECT_URI = 'https://api.ptpgo.com/socauth/vk/'

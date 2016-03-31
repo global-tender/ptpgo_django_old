@@ -3,218 +3,220 @@ import pymysql.cursors
 
 from ptpgo.models import CarType, CarMark, CarModel, CarGeneration, CarSerie, CarModification, CarCharacteristic, CarCharacteristicValue
 
+
 class Command(BaseCommand):
 
-	def handle(self, *args, **options):
-		self.import_cars()
+    def handle(self, *args, **options):
+        self.import_cars()
 
-	def connection(self):
-		# change connection details
-		conn = pymysql.connect(host='localhost',
-									 user='import_cars',
-									 password='import_cars',
-									 db='import_cars',
-									 charset='utf8mb4',
-									 cursorclass=pymysql.cursors.DictCursor)
-		return conn
+    def connection(self):
+        # change connection details
+        conn = pymysql.connect(
+            host='localhost',
+            user='import_cars',
+            password='import_cars',
+            db='import_cars',
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor)
+        return conn
 
-	def import_cars(self):
+    def import_cars(self):
 
-		# self.import_characteristic()
-		# self.import_mark()
-		# self.import_model()
-		# self.import_generation()
-		# self.import_serie()
-		# self.import_modification()
-		# self.import_characteristic_value()
+        # self.import_characteristic()
+        # self.import_mark()
+        # self.import_model()
+        # self.import_generation()
+        # self.import_serie()
+        # self.import_modification()
+        # self.import_characteristic_value()
 
-	def import_characteristic(self):
+    def import_characteristic(self):
 
-		CarCharacteristic.objects.all().delete()
+        CarCharacteristic.objects.all().delete()
 
-		connection = self.connection()
-		try:
-			with connection.cursor() as cursor:
-				sql = """SELECT * FROM car_characteristic"""
-				cursor.execute(sql)
-				result = cursor.fetchall()
+        connection = self.connection()
+        try:
+            with connection.cursor() as cursor:
+                sql = """SELECT * FROM car_characteristic"""
+                cursor.execute(sql)
+                result = cursor.fetchall()
 
-				for res in result:
-					print(res)
-					transac = CarCharacteristic(
-						id_car_characteristic = res['id_car_characteristic'],
-						name = res['name'],
-						parent = res['id_parent'],
-					)
-					transac.save()
+                for res in result:
+                    print(res)
+                    transac = CarCharacteristic(
+                        id_car_characteristic = res['id_car_characteristic'],
+                        name = res['name'],
+                        parent = res['id_parent'],
+                    )
+                    transac.save()
 
-		finally:
-			connection.close()
+        finally:
+            connection.close()
 
-		return True
-
-
-	def import_mark(self):
-
-		CarMark.objects.all().delete()
-
-		car_type = CarType.objects.filter(id=1).first()
-
-		connection = self.connection()
-		try:
-			with connection.cursor() as cursor:
-				sql = """SELECT * FROM car_mark"""
-				cursor.execute(sql)
-				result = cursor.fetchall()
-
-				for res in result:
-					print(res)
-					transac = CarMark(
-						id_car_mark = res['id_car_mark'],
-						name = res['name'],
-						name_rus = res['name_rus'],
-						id_car_type = car_type,
-					)
-					transac.save()
-
-		finally:
-			connection.close()
-
-		return True
-
-	def import_model(self):
-
-		CarModel.objects.all().delete()
-
-		connection = self.connection()
-		try:
-			with connection.cursor() as cursor:
-				sql = """SELECT * FROM car_model"""
-				cursor.execute(sql)
-				result = cursor.fetchall()
-
-				for res in result:
-					print(res)
-					transac = CarModel(
-						id_car_model = res['id_car_model'],
-						name = res['name'],
-						name_rus = res['name_rus'],
-						id_car_mark = res['id_car_mark'],
-					)
-					transac.save()
-
-		finally:
-			connection.close()
-
-		return True
+        return True
 
 
-	def import_generation(self):
+    def import_mark(self):
 
-		CarGeneration.objects.all().delete()
+        CarMark.objects.all().delete()
 
-		connection = self.connection()
-		try:
-			with connection.cursor() as cursor:
-				sql = """SELECT * FROM car_generation"""
-				cursor.execute(sql)
-				result = cursor.fetchall()
+        car_type = CarType.objects.filter(id=1).first()
 
-				for res in result:
-					print(res)
-					transac = CarGeneration(
-						id_car_generation = res['id_car_generation'],
-						name = res['name'],
-						year_begin = res['year_begin'],
-						year_end = res['year_end'],
-						id_car_model = res['id_car_model'],
-					)
-					transac.save()
+        connection = self.connection()
+        try:
+            with connection.cursor() as cursor:
+                sql = """SELECT * FROM car_mark"""
+                cursor.execute(sql)
+                result = cursor.fetchall()
 
-		finally:
-			connection.close()
+                for res in result:
+                    print(res)
+                    transac = CarMark(
+                        id_car_mark = res['id_car_mark'],
+                        name = res['name'],
+                        name_rus = res['name_rus'],
+                        id_car_type = car_type,
+                    )
+                    transac.save()
 
-		return True
+        finally:
+            connection.close()
 
-	def import_serie(self):
+        return True
 
-		CarSerie.objects.all().delete()
+    def import_model(self):
 
-		connection = self.connection()
-		try:
-			with connection.cursor() as cursor:
-				sql = """SELECT * FROM car_serie"""
-				cursor.execute(sql)
-				result = cursor.fetchall()
+        CarModel.objects.all().delete()
 
-				for res in result:
-					print(res)
-					transac = CarSerie(
-						id_car_serie = res['id_car_serie'],
-						name = res['name'],
-						id_car_model = res['id_car_model'],
-						id_car_generation = res['id_car_generation'],
-					)
-					transac.save()
+        connection = self.connection()
+        try:
+            with connection.cursor() as cursor:
+                sql = """SELECT * FROM car_model"""
+                cursor.execute(sql)
+                result = cursor.fetchall()
 
-		finally:
-			connection.close()
+                for res in result:
+                    print(res)
+                    transac = CarModel(
+                        id_car_model = res['id_car_model'],
+                        name = res['name'],
+                        name_rus = res['name_rus'],
+                        id_car_mark = res['id_car_mark'],
+                    )
+                    transac.save()
 
-		return True
+        finally:
+            connection.close()
 
-	def import_modification(self):
+        return True
 
-		CarModification.objects.all().delete()
 
-		connection = self.connection()
-		try:
-			with connection.cursor() as cursor:
-				sql = """SELECT * FROM car_modification"""
-				cursor.execute(sql)
-				result = cursor.fetchall()
+    def import_generation(self):
 
-				for res in result:
-					print(res)
-					transac = CarModification(
-						id_car_modification = res['id_car_modification'],
-						name = res['name'],
-						start_production_year = res['start_production_year'],
-						end_production_year = res['end_production_year'],
-						price_min = res['price_min'],
-						price_max = res['price_max'],
-						id_car_model = res['id_car_model'],
-						id_car_serie = res['id_car_serie'],
-					)
-					transac.save()
+        CarGeneration.objects.all().delete()
 
-		finally:
-			connection.close()
+        connection = self.connection()
+        try:
+            with connection.cursor() as cursor:
+                sql = """SELECT * FROM car_generation"""
+                cursor.execute(sql)
+                result = cursor.fetchall()
 
-		return True
+                for res in result:
+                    print(res)
+                    transac = CarGeneration(
+                        id_car_generation = res['id_car_generation'],
+                        name = res['name'],
+                        year_begin = res['year_begin'],
+                        year_end = res['year_end'],
+                        id_car_model = res['id_car_model'],
+                    )
+                    transac.save()
 
-	def import_characteristic_value(self):
+        finally:
+            connection.close()
 
-		CarCharacteristicValue.objects.all().delete()
+        return True
 
-		connection = self.connection()
-		try:
-			with connection.cursor() as cursor:
-				sql = """SELECT * FROM car_characteristic_value"""
-				cursor.execute(sql)
-				result = cursor.fetchall()
+    def import_serie(self):
 
-				for res in result:
-					print(res)
-					transac = CarCharacteristicValue(
-						id_car_characteristic_value = res['id_car_characteristic_value'],
-						value = res['value'],
-						unit = res['unit'],
-						id_car_characteristic = res['id_car_characteristic'],
-						id_car_modification = res['id_car_modification'],
-					)
-					transac.save()
+        CarSerie.objects.all().delete()
 
-		finally:
-			connection.close()
+        connection = self.connection()
+        try:
+            with connection.cursor() as cursor:
+                sql = """SELECT * FROM car_serie"""
+                cursor.execute(sql)
+                result = cursor.fetchall()
 
-		return True
+                for res in result:
+                    print(res)
+                    transac = CarSerie(
+                        id_car_serie = res['id_car_serie'],
+                        name = res['name'],
+                        id_car_model = res['id_car_model'],
+                        id_car_generation = res['id_car_generation'],
+                    )
+                    transac.save()
+
+        finally:
+            connection.close()
+
+        return True
+
+    def import_modification(self):
+
+        CarModification.objects.all().delete()
+
+        connection = self.connection()
+        try:
+            with connection.cursor() as cursor:
+                sql = """SELECT * FROM car_modification"""
+                cursor.execute(sql)
+                result = cursor.fetchall()
+
+                for res in result:
+                    print(res)
+                    transac = CarModification(
+                        id_car_modification = res['id_car_modification'],
+                        name = res['name'],
+                        start_production_year = res['start_production_year'],
+                        end_production_year = res['end_production_year'],
+                        price_min = res['price_min'],
+                        price_max = res['price_max'],
+                        id_car_model = res['id_car_model'],
+                        id_car_serie = res['id_car_serie'],
+                    )
+                    transac.save()
+
+        finally:
+            connection.close()
+
+        return True
+
+    def import_characteristic_value(self):
+
+        CarCharacteristicValue.objects.all().delete()
+
+        connection = self.connection()
+        try:
+            with connection.cursor() as cursor:
+                sql = """SELECT * FROM car_characteristic_value"""
+                cursor.execute(sql)
+                result = cursor.fetchall()
+
+                for res in result:
+                    print(res)
+                    transac = CarCharacteristicValue(
+                        id_car_characteristic_value = res['id_car_characteristic_value'],
+                        value = res['value'],
+                        unit = res['unit'],
+                        id_car_characteristic = res['id_car_characteristic'],
+                        id_car_modification = res['id_car_modification'],
+                    )
+                    transac.save()
+
+        finally:
+            connection.close()
+
+        return True
