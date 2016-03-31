@@ -29,6 +29,7 @@ class Command(BaseCommand):
         # self.import_serie()
         # self.import_modification()
         # self.import_characteristic_value()
+        pass
 
     def import_characteristic(self):
 
@@ -44,9 +45,9 @@ class Command(BaseCommand):
                 for res in result:
                     print(res)
                     transac = CarCharacteristic(
-                        id_car_characteristic = res['id_car_characteristic'],
-                        name = res['name'],
-                        parent = res['id_parent'],
+                        id_car_characteristic=res['id_car_characteristic'],
+                        name=res['name'],
+                        parent=res['id_parent'],
                     )
                     transac.save()
 
@@ -54,7 +55,6 @@ class Command(BaseCommand):
             connection.close()
 
         return True
-
 
     def import_mark(self):
 
@@ -72,10 +72,10 @@ class Command(BaseCommand):
                 for res in result:
                     print(res)
                     transac = CarMark(
-                        id_car_mark = res['id_car_mark'],
-                        name = res['name'],
-                        name_rus = res['name_rus'],
-                        id_car_type = car_type,
+                        id_car_mark=res['id_car_mark'],
+                        name=res['name'],
+                        name_rus=res['name_rus'],
+                        id_car_type=car_type,
                     )
                     transac.save()
 
@@ -98,10 +98,10 @@ class Command(BaseCommand):
                 for res in result:
                     print(res)
                     transac = CarModel(
-                        id_car_model = res['id_car_model'],
-                        name = res['name'],
-                        name_rus = res['name_rus'],
-                        id_car_mark = res['id_car_mark'],
+                        id_car_model=res['id_car_model'],
+                        name=res['name'],
+                        name_rus=res['name_rus'],
+                        id_car_mark=res['id_car_mark'],
                     )
                     transac.save()
 
@@ -109,7 +109,6 @@ class Command(BaseCommand):
             connection.close()
 
         return True
-
 
     def import_generation(self):
 
@@ -125,11 +124,11 @@ class Command(BaseCommand):
                 for res in result:
                     print(res)
                     transac = CarGeneration(
-                        id_car_generation = res['id_car_generation'],
-                        name = res['name'],
-                        year_begin = res['year_begin'],
-                        year_end = res['year_end'],
-                        id_car_model = res['id_car_model'],
+                        id_car_generation=res['id_car_generation'],
+                        name=res['name'],
+                        year_begin=res['year_begin'],
+                        year_end=res['year_end'],
+                        id_car_model=res['id_car_model'],
                     )
                     transac.save()
 
@@ -152,10 +151,10 @@ class Command(BaseCommand):
                 for res in result:
                     print(res)
                     transac = CarSerie(
-                        id_car_serie = res['id_car_serie'],
-                        name = res['name'],
-                        id_car_model = res['id_car_model'],
-                        id_car_generation = res['id_car_generation'],
+                        id_car_serie=res['id_car_serie'],
+                        name=res['name'],
+                        id_car_model=res['id_car_model'],
+                        id_car_generation=res['id_car_generation'],
                     )
                     transac.save()
 
@@ -178,14 +177,14 @@ class Command(BaseCommand):
                 for res in result:
                     print(res)
                     transac = CarModification(
-                        id_car_modification = res['id_car_modification'],
-                        name = res['name'],
-                        start_production_year = res['start_production_year'],
-                        end_production_year = res['end_production_year'],
-                        price_min = res['price_min'],
-                        price_max = res['price_max'],
-                        id_car_model = res['id_car_model'],
-                        id_car_serie = res['id_car_serie'],
+                        id_car_modification=res['id_car_modification'],
+                        name=res['name'],
+                        start_production_year=res['start_production_year'],
+                        end_production_year=res['end_production_year'],
+                        price_min=res['price_min'],
+                        price_max=res['price_max'],
+                        id_car_model=res['id_car_model'],
+                        id_car_serie=res['id_car_serie'],
                     )
                     transac.save()
 
@@ -208,11 +207,11 @@ class Command(BaseCommand):
                 for res in result:
                     print(res)
                     transac = CarCharacteristicValue(
-                        id_car_characteristic_value = res['id_car_characteristic_value'],
-                        value = res['value'],
-                        unit = res['unit'],
-                        id_car_characteristic = res['id_car_characteristic'],
-                        id_car_modification = res['id_car_modification'],
+                        id_car_characteristic_value=res['id_car_characteristic_value'],
+                        value=res['value'],
+                        unit=res['unit'],
+                        id_car_characteristic=res['id_car_characteristic'],
+                        id_car_modification=res['id_car_modification'],
                     )
                     transac.save()
 
