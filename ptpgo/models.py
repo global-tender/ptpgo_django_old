@@ -1,5 +1,37 @@
-from django.utils import timezone
 from django.db import models
+from django.contrib.auth.models import User
+
+
+class Clients(models.Model):
+
+    class Meta:
+        verbose_name_plural = 'Клиенты: Данные клиента'
+
+    def __str__(self):
+        return self.user.id
+
+    user                        = models.ForeignKey(User)
+
+    vk_token                    = models.CharField(max_length=255, blank=True, null=True)
+    vk_extra_data               = models.CharField(max_length=10000, blank=True, null=True)
+
+    about                       = models.TextField(blank=True, null=True) # О себе
+
+    phone                       = models.CharField(max_length=255, blank=True, null=True) # Номер телефона, только цифры, без пробелов
+    additional_contacts         = models.CharField(max_length=1000, blank=True, null=True) # Дополнительные контакты, в свободной форме
+
+    email_confirmed           = models.BooleanField(default=False) # Был ли подтвержден E-Mail
+    email_confirm_code        = models.CharField(max_length=255, blank=True, null=True) # Код потверждения E-Mail адреса
+
+    phone_confirmed             = models.BooleanField(default=False) # Был ли подтвержден номер телефона
+    phone_confirm_code          = models.CharField(max_length=255, blank=True, null=True) # Код потверждения номер телефона
+
+    # Среднее время отклика на заказ, подсчитывается и изменяется по отклику
+    response_time               = models.CharField(max_length=32, blank=True, null=True)
+    # В процентах количество откликов на заказ (пример: 100%)
+    response_rate               = models.CharField(max_length=32, blank=True, null=True)
+
+    honors                      = models.IntegerField(default=0) # Награды - баллы
 
 
 # Вид транспорта
