@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+SESSION_COOKIE_AGE = 7776000  # 90 days for active user session
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -102,6 +104,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Authentication backends
+AUTHENTICATION_BACKENDS = (
+    'ptpgo.backends.CustomAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 
 # Internationalization

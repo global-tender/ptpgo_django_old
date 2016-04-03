@@ -1,12 +1,13 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from ptpgo import views
+from ptpgo import views, views_client
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
-    url(r'^signin/?$', views.signin, name='signin'),
+    url(r'^signin/?$', views_client.signin, name='signin'),
+    url(r'^signout/?$', views_client.signout, name='signout'),
 
     url(r'^robots.txt$', views.robots, name='robots.txt'),
 ]
