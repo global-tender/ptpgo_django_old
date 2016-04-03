@@ -34,6 +34,14 @@ class Clients(models.Model):
     honors                      = models.IntegerField(default=0) # Награды - баллы
 
 
+
+
+
+
+
+############################
+############################
+############################
 # Вид транспорта
 class CarType(models.Model):
 

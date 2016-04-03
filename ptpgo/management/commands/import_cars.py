@@ -3,6 +3,13 @@ import pymysql.cursors
 
 from ptpgo.models import CarType, CarMark, CarModel, CarGeneration, CarSerie, CarModification, CarCharacteristic, CarCharacteristicValue
 
+# django-admin command to import full http://auto.basebuy.ru/ database (mysql)
+#  into Django (any database backend).
+# To start import:
+#   deploy original mysql database
+#   change mysql connection details
+#   uncomment import methods calls
+#   run: python manage.py import_cars
 
 class Command(BaseCommand):
 
@@ -10,7 +17,6 @@ class Command(BaseCommand):
         self.import_cars()
 
     def connection(self):
-        # change connection details
         conn = pymysql.connect(
             host='localhost',
             user='import_cars',
