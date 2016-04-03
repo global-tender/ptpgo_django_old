@@ -1,4 +1,6 @@
+from django.template import loader
 from django.contrib.auth import authenticate, login, logout
+from django.http import StreamingHttpResponse, HttpResponseRedirect
 
 
 def signout(request):
