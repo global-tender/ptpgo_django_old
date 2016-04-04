@@ -8,6 +8,7 @@ def index(request):
         'content': 'pages/index.html',
         'request': request,
         'title': 'Index page',
+        'header_class': 'header--index',
     }
     return StreamingHttpResponse(template.render(template_args, request))
 
