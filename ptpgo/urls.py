@@ -5,6 +5,7 @@ from ptpgo import views, views_client
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', views.index, name='index'),
 
     url(r'^signin/?$', views_client.signin, name='signin'),
     url(r'^signout/?$', views_client.signout, name='signout'),
