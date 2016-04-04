@@ -97,11 +97,10 @@ def signup(request):
             email.send()
             connection.close()
 
-            account = authenticate(email=email, password=password)
-            if account is not None:
-                if account.is_active:
-                    login(request, account)
-                    json_resp['redirectURL'] = '/cabinet/'
+            # Authenticate registered user
+            user.backend = 'ptpgo.backends.CustomAuthBackend'
+            login(request, user)
+            json_resp['redirectURL'] = '/cabinet/'
 
     else:
         json_resp['responseText'] = 'Ошибка введенных данных'

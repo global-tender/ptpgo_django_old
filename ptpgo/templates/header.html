@@ -15,7 +15,7 @@
         {% if not request.user.is_authenticated %}
           <div class="header__right"><a href="#" data-open-popup="signup" class="header__link">Зарегистрироваться</a><a href="#" data-open-popup="signin" class="header__link">Войти</a></div>
         {% else %}
-          <div class="header__right"><a href="/cabinet/" class="header__user"><span style="background-image: url(/static/images/tmp/profile_image.jpg);" class="user__image"></span><span class="user__name">Константин Дурнев</span></a></div>
+          <div class="header__right"><a href="/cabinet/" class="header__user"><span style="background-image: url(/static/images/tmp/profile_image.jpg);" class="user__image"></span><span class="user__name">{{request.user.email}}</span></a></div>
         {% endif %}
       </div>
     </header>
