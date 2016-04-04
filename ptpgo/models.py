@@ -8,7 +8,7 @@ class Clients(models.Model):
         verbose_name_plural = 'Клиенты: Данные клиента'
 
     def __str__(self):
-        return self.user.id
+        return str(self.user.id)
 
     user                        = models.ForeignKey(User)
 
@@ -20,8 +20,8 @@ class Clients(models.Model):
     phone                       = models.CharField(max_length=255, blank=True, null=True) # Номер телефона, только цифры, без пробелов
     additional_contacts         = models.CharField(max_length=1000, blank=True, null=True) # Дополнительные контакты, в свободной форме
 
-    email_confirmed           = models.BooleanField(default=False) # Был ли подтвержден E-Mail
-    email_confirm_code        = models.CharField(max_length=255, blank=True, null=True) # Код потверждения E-Mail адреса
+    email_confirmed             = models.BooleanField(default=False) # Был ли подтвержден E-Mail
+    email_confirm_code          = models.CharField(max_length=255, blank=True, null=True) # Код потверждения E-Mail адреса
 
     phone_confirmed             = models.BooleanField(default=False) # Был ли подтвержден номер телефона
     phone_confirm_code          = models.CharField(max_length=255, blank=True, null=True) # Код потверждения номер телефона

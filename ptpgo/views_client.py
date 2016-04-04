@@ -6,6 +6,7 @@ from django.template import loader
 from django.contrib.auth import authenticate, login, logout
 from django.http import StreamingHttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
+from django.conf import settings
 
 from ptpgo.models import Clients
 
@@ -96,6 +97,12 @@ def signup(request):
             email.send()
             connection.close()
 
+            account = authenticate(email=email, password=password)
+            if account is not None:
+                if account.is_active:
+                    login(request, account)
+                    json_resp['redirectURL'] = '/cabinet/'
+
     else:
         json_resp['responseText'] = 'Ошибка введенных данных'
         json_resp['redirectURL'] = ''
@@ -105,22 +112,24 @@ def signup(request):
 
 def confirm_email(request):
 
+    email_confirmed = False
+
     confirm_code = request.GET.get('confirm_code', None)
     if not confirm_code:
-        HttpResponseRedirect('/')
+        return HttpResponseRedirect('/')
 
     client = Clients.objects.filter(email_confirm_code=confirm_code).first()
-    if not client:
-        HttpResponseRedirect('/')
+    if client:
+        Clients.objects.filter(id=client.id).update(email_confirm_code="")
+        Clients.objects.filter(id=client.id).update(email_confirmed=True)
 
-    Clients.objects.filter(id=client.id).update(email_confirm_code="")
-    Clients.objects.filter(id=client.id).update(email_confirmed=True)
-
-    email_confirmed = True
+        email_confirmed = True
+    else:
+        return HttpResponseRedirect('/')
 
     template = loader.get_template('content.html')
     template_args = {
-        'content': 'pages/client/confirm_email.html'
+        'content': 'pages/client/confirm_email.html',
         'request': request,
         'title': 'Подтверждение E-Mail адреса',
         'header_class': 'undefined',

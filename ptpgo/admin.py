@@ -1,5 +1,9 @@
 from django.contrib import admin
 
+from ptpgo.models import Clients
+
+admin.site.register(Clients)
+
 # from ptpgo.models import CarType, CarMark, CarModel, CarGeneration, CarSerie, CarModification, CarCharacteristic, CarCharacteristicValue
 
 # База авто
