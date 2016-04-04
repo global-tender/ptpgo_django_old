@@ -7,6 +7,7 @@ def index(request):
     template_args = {
         'content': 'pages/index.html',
         'request': request,
+        'title': 'Index page',
     }
     return StreamingHttpResponse(template.render(template_args, request))
 
