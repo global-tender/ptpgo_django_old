@@ -1,29 +1,57 @@
 
 ```
-Developed using Python 3.4.3, Django 1.9.4
-Database is PostgreSQL 9.1
+Разработано с использованием Python 3.4.3, Django 1.9.4
+База данных: PostgreSQL 9.1
 ```
 
-### Restore database, disk backups, ssl certificates
+### Развернуть проект:
 
-### Install requirements and setup virtualenv:
-
+ * Склонировать репозиторий в директорию на диске
+ * Создать пользователя и БД в PostgreSQL:
 ```
-$ su - ptpgo	# change username
-$ pip install virtualenvwrapper
-...
-$ export WORKON_HOME=~/Envs
-$ mkdir -p $WORKON_HOME
-$ source /usr/local/bin/virtualenvwrapper.sh
+CREATE USER ptpgo WITH PASSWORD 'ptpgo_password';
 
-$ mkvirtualenv --python=/usr/bin/python3 ptpgo
-$ workon ptpgo
+CREATE DATABASE "ptpgo"
+  WITH OWNER "ptpgo"
+  ENCODING 'UTF8'
+  LC_COLLATE = 'en_US.UTF-8'
+  LC_CTYPE = 'en_US.UTF-8';
 
-# enter repository root directory and install python packages:
-$ pip install -r requirements.txt
+GRANT ALL PRIVILEGES ON DATABASE "ptpgo" to ptpgo;
 ```
+ * Отредактировать параметры подключения к БД в файле `ptpgo/settings.py` (файл в .gitignore)
+ * Установить `python3`
+ * Установить `virtualenvwrapper` (виртуальная python среда):
+```
+pip install virtualenvwrapper
+mkdir ~/Envs
+
+export WORKON_HOME=~/Envs  # Добавить в .bashrc
+source /usr/local/bin/virtualenvwrapper.sh  # Путь может отличаться, добавить в .bashrc
+
+mkvirtualenv --python=/usr/bin/python3 ptpgo  # Создает виртуальную среду с именем ptpgo, путь к python3 может отличаться
+
+workon ptpgo  # Вход в созданную виртуальную среду; выполнять команду всегда когда запускаем встроенный веб сервер для тестирования; команда не выполнится в следующий раз, если в .bashrc не добавлены команды из этой инструкции, где была указана необходимость их добавления
+
+
+pip install -r requirements.txt  # Установка в виртуальную среду всех пакетов указанных в файле requirements.txt; выполняется один раз, либо если количество зависимостей было расширено
+```
+ * Находясь в директории проекта и подключившись к виртуальной среде, запустить первоначальные миграции, чтобы создать структуру БД:
+```
+python manage.py makemigrations
+python manage.py migrate
+
+# Все миграции коммитятся в git, поэтому все изменения модели можно накатывать на тестовом или продакшен сервере с использованием команды: python manage.py migrate
+```
+ * Запустить встроенный веб сервер:
+```
+python manage.py runserver 127.0.0.1:8090
+```
+
 
 ### Setup Production (using nginx + gunicorn)
+
+####Restore database, disk backups, ssl certificates
 
 ####Running gunicorn (WSGI HTTP Server) this way (7 instances, max timeout 1000 seconds):
 

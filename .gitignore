@@ -1,3 +1,4 @@
+/ptpgo/settings.py
 *.pyc
 /__pycache__/
 /ptpgo/__pycache__/
