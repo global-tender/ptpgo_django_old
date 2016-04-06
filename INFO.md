@@ -23,7 +23,7 @@ GRANT ALL PRIVILEGES ON DATABASE "ptpgo" to ptpgo;
  * Установить `python3`
  * Установить `virtualenvwrapper` (виртуальная python среда):
 ```
-pip install virtualenvwrapper
+sudo pip install virtualenvwrapper
 mkdir ~/Envs
 
 export WORKON_HOME=~/Envs  # Добавить в .bashrc
@@ -40,6 +40,8 @@ pip install -r requirements.txt  # Установка в виртуальную 
 ```
 python manage.py makemigrations
 python manage.py migrate
+
+python manage.py createsuperuser
 
 # Все миграции коммитятся в git, поэтому все изменения модели можно накатывать на тестовом или продакшен сервере с использованием команды: python manage.py migrate
 ```
