@@ -2,6 +2,9 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
+
 
 class Clients(models.Model):
 
@@ -92,3 +95,10 @@ class ClientNotificationsLog(models.Model):
     destination_system        = models.CharField(max_length=255) # Куда было направлено (email, sms)
     destination_details       = models.CharField(max_length=255) # Данные получателя
     timestamp                 = models.DateTimeField('added', default=timezone.now) # Дата/время уведомления
+
+
+# Receive the pre_delete signal and delete the file associated with the model instance.
+@receiver(pre_delete, sender=ClientPhotos)
+def clientphotos_delete(sender, instance, **kwargs):
+    # Pass false so FileField doesn't save the model.
+    instance.photo.delete(False)
