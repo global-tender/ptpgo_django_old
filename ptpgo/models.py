@@ -71,7 +71,7 @@ class ClientSiteNotifications(models.Model):
     def __str__(self):
         return self.notification_type + ' | user: ' + self.user.email
 
-    client                    = models.ForeignKey(User) # Связь: Пользователь
+    user                      = models.ForeignKey(User) # Связь: Пользователь
     notification_type         = models.CharField(max_length=255) # Тип уведомления
     notification_data         = models.CharField(max_length=255) # Содержание уведомления
     checked                   = models.BooleanField(default=False) # Просмотрено ли уведомление
@@ -86,7 +86,7 @@ class ClientNotificationsLog(models.Model):
     def __str__(self):
         return self.destination_system + ' | user: ' + self.user.email
 
-    client                    = models.ForeignKey(User) # Связь: Пользователь
+    user                      = models.ForeignKey(User) # Связь: Пользователь
     notification_type         = models.CharField(max_length=255) # Тип уведомления
     notification_data         = models.CharField(max_length=255) # Содержание уведомления
     destination_system        = models.CharField(max_length=255) # Куда было направлено (email, sms)

@@ -13,6 +13,9 @@ from ptpgo.models import Clients
 
 def signin(request):
 
+    if request.method == 'GET':
+        return HttpResponseRedirect('/')
+
     json_resp = {}
     json_resp['status'] = True
 
@@ -22,7 +25,6 @@ def signin(request):
     json_resp['redirectURL'] = referer if request.META['HTTP_HOST'] in referer else '/'
 
     if request.user.is_authenticated():
-        print('here')
         return StreamingHttpResponse(json.dumps(json_resp, indent=4), content_type="application/vnd.api+json")
 
 
@@ -46,6 +48,9 @@ def signin(request):
 
 
 def signup(request):
+
+    if request.method == 'GET':
+        return HttpResponseRedirect('/')
 
     json_resp = {}
     json_resp['status'] = True
@@ -138,23 +143,18 @@ def confirm_email(request):
 
 
 def signout(request):
-    pass
-    # if not request.user.is_authenticated():
-    #     return HttpResponseRedirect('/')
 
-    # if request.method == "POST":
-    #     logout(request)
-    #     return HttpResponseRedirect(request.POST.get('referer', '/'))
+    referer = request.META.get('HTTP_REFERER', '/')
+    if 'auth' in referer or 'account' in referer:
+        referer = '/'
+    referer = referer if request.META['HTTP_HOST'] in referer else '/'
 
-    # referer = request.META.get('HTTP_REFERER', '/')
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(referer)
 
-    # template = loader.get_template('auth/signout.html')
-    # template_args = {
-    #     'request': request,
-    #     'title': 'Sign Out',
-    #     'referer': referer if request.META['HTTP_HOST'] in referer else '/',
-    # }
-    # return StreamingHttpResponse(template.render(template_args, request))
+
+    logout(request)
+    return HttpResponseRedirect(referer)
 
 
 def cabinet(request):
