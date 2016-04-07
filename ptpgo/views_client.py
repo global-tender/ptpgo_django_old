@@ -70,7 +70,7 @@ def signup(request):
 
     if email and password and password_verify and password == password_verify:
 
-        check_user = User.objects.filter(email=email).first()
+        check_user = User.objects.filter(email__exact=email).first()
         if check_user:
             json_resp['responseText'] = 'Пользователь с указанным email адресом уже существует'
             json_resp['redirectURL'] = ''
@@ -170,3 +170,7 @@ def cabinet(request):
         'header_class': 'undefined',
     }
     return StreamingHttpResponse(template.render(template_args, request))
+
+
+def pass_reset(request):
+    pass

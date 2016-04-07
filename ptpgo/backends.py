@@ -5,7 +5,7 @@ class CustomAuthBackend(ModelBackend):
 
     def authenticate(self, email=None, password=None, vk_token=None, **kwargs):
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(email__exact=email)
 
             if user.check_password(password):
                 return user
