@@ -8,6 +8,7 @@ from django.http import StreamingHttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.conf import settings
 
+from ptpgo.utility import utility
 from ptpgo.models import Clients
 
 
@@ -18,15 +19,10 @@ def signin(request):
 
     json_resp = {}
     json_resp['status'] = True
-
-    referer = request.META.get('HTTP_REFERER', '/')
-    if 'auth' in referer or 'account' in referer:
-        referer = '/'
-    json_resp['redirectURL'] = referer if request.META['HTTP_HOST'] in referer else '/'
+    json_resp['redirectURL'] = utility.get_referer(request)
 
     if request.user.is_authenticated():
         return StreamingHttpResponse(json.dumps(json_resp, indent=4), content_type="application/vnd.api+json")
-
 
     email = request.POST.get('email', '').strip()
     password = request.POST.get('password', '').strip()
@@ -54,15 +50,10 @@ def signup(request):
 
     json_resp = {}
     json_resp['status'] = True
-
-    referer = request.META.get('HTTP_REFERER', '/')
-    if 'auth' in referer or 'account' in referer:
-        referer = '/'
-    json_resp['redirectURL'] = referer if request.META['HTTP_HOST'] in referer else '/'
+    json_resp['redirectURL'] = utility.get_referer(request)
 
     if request.user.is_authenticated():
         return StreamingHttpResponse(json.dumps(json_resp, indent=4), content_type="application/vnd.api+json")
-
 
     email = request.POST.get('email', '').strip()
     password = request.POST.get('password', '').strip()
@@ -144,10 +135,7 @@ def confirm_email(request):
 
 def signout(request):
 
-    referer = request.META.get('HTTP_REFERER', '/')
-    if 'auth' in referer or 'account' in referer:
-        referer = '/'
-    referer = referer if request.META['HTTP_HOST'] in referer else '/'
+    referer = utility.get_referer(request)
 
     if not request.user.is_authenticated():
         return HttpResponseRedirect(referer)
