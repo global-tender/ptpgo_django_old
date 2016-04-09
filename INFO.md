@@ -23,7 +23,7 @@ GRANT ALL PRIVILEGES ON DATABASE "ptpgo" to ptpgo;
  * Установить `python3`
  * Установить `virtualenvwrapper` (виртуальная python среда):
 ```
-pip install virtualenvwrapper
+sudo pip install virtualenvwrapper
 mkdir ~/Envs
 
 export WORKON_HOME=~/Envs  # Добавить в .bashrc
@@ -40,6 +40,8 @@ pip install -r requirements.txt  # Установка в виртуальную 
 ```
 python manage.py makemigrations
 python manage.py migrate
+
+python manage.py createsuperuser
 
 # Все миграции коммитятся в git, поэтому все изменения модели можно накатывать на тестовом или продакшен сервере с использованием команды: python manage.py migrate
 ```
@@ -82,10 +84,10 @@ server {
 
 	server_name ptpgo.com www.ptpgo.com;
 
-	access_log /data/global-tender/ptpgo/ptpgo.access.log;
-	error_log /data/global-tender/ptpgo/ptpgo.error.log;
+	access_log /data/ptpgo/logs/ptpgo.access.log;
+	error_log /data/ptpgo/logs/ptpgo.error.log;
 
-	root /data/global-tender/ptpgo/www/ptpgo/;
+	root /data/ptpgo/sites/ptpgo/ptpgo/;
 
 	location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
 		expires 10d;
@@ -115,12 +117,12 @@ server {
 
 
 	location /static/ { # STATIC_URL
-		alias /data/global-tender/ptpgo/www/ptpgo/static/; # STATIC_ROOT
+		alias /data/ptpgo/sites/ptpgo/ptpgo/static/; # STATIC_ROOT
 		expires 30d;
 	}
 
 	location = /favicon.ico {
-		alias /data/global-tender/ptpgo/www/ptpgo/static/favicon.png;
+		alias /data/ptpgo/sites/ptpgo/ptpgo/static/favicon.png;
 	}
 
 	location / {
@@ -144,10 +146,10 @@ server {
 
 	server_name ptpgo.ru www.ptpgo.ru;
 
-	access_log /data/global-tender/ptpgo/ptpgo.access.log;
-	error_log /data/global-tender/ptpgo/ptpgo.error.log;
+	access_log /data/ptpgo/logs/ptpgo.access.log;
+	error_log /data/ptpgo/logs/ptpgo.error.log;
 
-	root /data/global-tender/ptpgo/www/ptpgo/;
+	root /data/ptpgo/sites/ptpgo/ptpgo/;
 
 	location ~* \.(?:ico|css|js|gif|jpe?g|png)$ {
 		expires 10d;
@@ -177,12 +179,12 @@ server {
 
 
 	location /static/ { # STATIC_URL
-		alias /data/global-tender/ptpgo/www/ptpgo/static/; # STATIC_ROOT
+		alias /data/ptpgo/sites/ptpgo/ptpgo/static/; # STATIC_ROOT
 		expires 30d;
 	}
 
 	location = /favicon.ico {
-		alias /data/global-tender/ptpgo/www/ptpgo/static/favicon.png;
+		alias /data/ptpgo/sites/ptpgo/ptpgo/static/favicon.png;
 	}
 
 	location / {

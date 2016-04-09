@@ -8,23 +8,21 @@ from django.http import StreamingHttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.conf import settings
 
+from ptpgo.utility import utility
 from ptpgo.models import Clients
 
 
 def signin(request):
 
+    if request.method == 'GET':
+        return HttpResponseRedirect('/')
+
     json_resp = {}
     json_resp['status'] = True
-
-    referer = request.META.get('HTTP_REFERER', '/')
-    if 'auth' in referer or 'account' in referer:
-        referer = '/'
-    json_resp['redirectURL'] = referer if request.META['HTTP_HOST'] in referer else '/'
+    json_resp['redirectURL'] = utility.get_referer(request)
 
     if request.user.is_authenticated():
-        print('here')
         return StreamingHttpResponse(json.dumps(json_resp, indent=4), content_type="application/vnd.api+json")
-
 
     email = request.POST.get('email', '').strip()
     password = request.POST.get('password', '').strip()
@@ -47,17 +45,15 @@ def signin(request):
 
 def signup(request):
 
+    if request.method == 'GET':
+        return HttpResponseRedirect('/')
+
     json_resp = {}
     json_resp['status'] = True
-
-    referer = request.META.get('HTTP_REFERER', '/')
-    if 'auth' in referer or 'account' in referer:
-        referer = '/'
-    json_resp['redirectURL'] = referer if request.META['HTTP_HOST'] in referer else '/'
+    json_resp['redirectURL'] = utility.get_referer(request)
 
     if request.user.is_authenticated():
         return StreamingHttpResponse(json.dumps(json_resp, indent=4), content_type="application/vnd.api+json")
-
 
     email = request.POST.get('email', '').strip()
     password = request.POST.get('password', '').strip()
@@ -65,7 +61,7 @@ def signup(request):
 
     if email and password and password_verify and password == password_verify:
 
-        check_user = User.objects.filter(email=email).first()
+        check_user = User.objects.filter(email__exact=email).first()
         if check_user:
             json_resp['responseText'] = 'Пользователь с указанным email адресом уже существует'
             json_resp['redirectURL'] = ''
@@ -138,23 +134,15 @@ def confirm_email(request):
 
 
 def signout(request):
-    pass
-    # if not request.user.is_authenticated():
-    #     return HttpResponseRedirect('/')
 
-    # if request.method == "POST":
-    #     logout(request)
-    #     return HttpResponseRedirect(request.POST.get('referer', '/'))
+    referer = utility.get_referer(request)
 
-    # referer = request.META.get('HTTP_REFERER', '/')
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(referer)
 
-    # template = loader.get_template('auth/signout.html')
-    # template_args = {
-    #     'request': request,
-    #     'title': 'Sign Out',
-    #     'referer': referer if request.META['HTTP_HOST'] in referer else '/',
-    # }
-    # return StreamingHttpResponse(template.render(template_args, request))
+
+    logout(request)
+    return HttpResponseRedirect(referer)
 
 
 def cabinet(request):
@@ -170,3 +158,7 @@ def cabinet(request):
         'header_class': 'undefined',
     }
     return StreamingHttpResponse(template.render(template_args, request))
+
+
+def pass_reset(request):
+    pass
