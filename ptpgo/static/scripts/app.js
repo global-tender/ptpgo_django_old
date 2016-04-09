@@ -158,8 +158,31 @@ var Overlay = function () {
   return Overlay;
 }();
 
+var UserDropList = function UserDropList() {
+  _classCallCheck(this, UserDropList);
+
+  var t = this;
+  this.$link = $('.js-user-link');
+  this.$drop = $('.js-user-drop');
+  this.timeout = false;
+  this.$link.add(this.$drop).on('mouseenter', function () {
+    t.$drop.show();
+    clearTimeout(t.timeout);
+    setTimeout(function () {
+      t.$drop.addClass('active');
+    }, 10);
+  }).on('mouseleave', function () {
+    t.$drop.removeClass('active');
+    t.timeout = setTimeout(function () {
+      t.$drop.hide();
+    }, 300);
+  });
+  // TODO: DO IT RIGHT
+};
+
 $(function () {
   new Overlay('.js-overlay', 'data-open-popup', 'data-popup-name');
   new Forms();
+  new UserDropList();
 });
 //# sourceMappingURL=app.js.map
