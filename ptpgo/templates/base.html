@@ -1,3 +1,4 @@
+{% load customTags %}
 <!DOCTYPE html>
 <html lang="" class="no-js">
   <head>
@@ -23,7 +24,10 @@
                 <ul class="drop__list js-user-drop">
                   <li class="list__item"><a href="/cabinet/" class="item__link">Кабинет</a></li>
                   <li class="list__item"><a href="#" class="item__link">Мои заказы</a></li>
-                  <li class="list__item"><a href="#" class="item__link">Мои лодки</a></li>
+                  {% get_user_boats as user_boats %}
+                  {% if user_boats %}
+                    <li class="list__item"><a href="#" class="item__link">Мои лодки</a></li>
+                  {% endif %}
                   <li class="list__item"><a href="#" class="item__link">Сообщения</a></li>
                   <li class="list__item"><a href="#" class="item__link">Профиль</a></li>
                   <li class="list__item"><a href="#" class="item__link">Настройки</a></li>
@@ -57,7 +61,7 @@
             </ul>
           </div>
           <div class="footer__block footer__block--company">
-            <div class="footer__social"><a href="https://vk.com/ptpgo" class="social__item"><i class="icon icon-vk"></i></a><a href="https://www.facebook.com/ptpgo" class="social__item"><i class="icon icon-facebook"></i></a><a href="#" class="social__item"><i class="icon icon-youtube-play"></i></a></div>
+            <div class="footer__social"><a href="https://vk.com/ptpgo" target="_blank" class="social__item"><i class="icon icon-vk"></i></a><a href="https://www.facebook.com/ptpgo" target="_blank" class="social__item"><i class="icon icon-facebook"></i></a><a href="#" class="social__item"><i class="icon icon-youtube-play"></i></a></div>
             <div class="footer__copy">&copy; PTPGO</div>
           </div>
         </div>
@@ -110,6 +114,7 @@
         </div>
       </div>
     </div>
+{% block js-footer-before-scripts%}{% endblock js-footer-before-scripts %}
     <script src="/static/scripts/vendor.js"></script>
     <script src="/static/scripts/app.js"></script>
 {% block js-footer %}{% endblock js-footer %}

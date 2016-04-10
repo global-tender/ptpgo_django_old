@@ -17,6 +17,10 @@
     </div>
 {% endblock content %}
 
+{% block js-footer-before-scripts %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAawdQDx6cPLfWUhB_NdINSorXyW31588I&amp;callback=map" async defer></script>
+{% endblock js-footer-before-scripts %}
+
 {% block js-footer %}
     <script>
       $(function(){

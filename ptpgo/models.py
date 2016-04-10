@@ -116,7 +116,7 @@ class ListBoat(models.Model):
     boat_builder              = models.CharField(max_length=255, blank=True, null=True)  # Производитель транспорта
     boat_model                = models.CharField(max_length=255, blank=True, null=True)  # Модель транспорта
     boat_length               = models.CharField(max_length=255, blank=True, null=True)  # Длина транспорта
-    boat_build_year           = models.CharField(max_length=32)  # Год производства
+    boat_build_year           = models.CharField(max_length=32, blank=True, null=True)  # Год производства
 
     location                  = models.CharField(max_length=1000, blank=True, null=True)  # Текущее местоположение
 
