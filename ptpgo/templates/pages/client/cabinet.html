@@ -1,3 +1,22 @@
-    <div class="wrapper">
-      <h1>Личный кабинет</h1>
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="cabinet_nav">
+      <div class="wrapper">
+        <ul class="cabinet_nav__list">
+          <li class="list__item"><a href="#" class="item__link active">Кабинет</a></li>
+          <li class="list__item"><a href="#" class="item__link">Мои заказы</a></li>
+          <li class="list__item"><a href="#" class="item__link">Сообщения</a></li>
+          <li class="list__item"><a href="#" class="item__link">Профиль</a></li>
+          <li class="list__item"><a href="#" class="item__link">Настройки</a></li>
+        </ul>
+      </div>
     </div>
+    <div class="wrapper">
+      <h1>Контент</h1>
+      <h2>Подзаголовок</h2>
+      <p>These are the 30 best free web fonts available on Google Fonts, in my humble opinion. They are all open-source and 100% free for commercial use. The provided ZIP file downloads contain the latest version of the font files to install on your desktop. The files come from the Google Fonts repository on GitHub—I regularly check the commits on GitHub to make sure the download files provided here contain the latest versions of the fonts. Enjoy! </p>
+      <p>These are the 30 best free web fonts available on Google Fonts, in my humble opinion. They are all open-source and 100% free for commercial use. The provided ZIP file downloads contain the latest version of the font files to install on your desktop. The files come from the Google Fonts repository on GitHub—I regularly check the commits on GitHub to make sure the download files provided here contain the latest versions of the fonts. Enjoy! </p>
+      <p>These are the 30 best free web fonts available on Google Fonts, in my humble opinion. They are all open-source and 100% free for commercial use. The provided ZIP file downloads contain the latest version of the font files to install on your desktop. The files come from the Google Fonts repository on GitHub—I regularly check the commits on GitHub to make sure the download files provided here contain the latest versions of the fonts. Enjoy! These are the 30 best free web fonts available on Google Fonts, in my humble opinion. They are all open-source and 100% free for commercial use. The provided ZIP file downloads contain the latest version of the font files to install on your desktop. The files come from the Google Fonts repository on GitHub—I regularly check the commits on GitHub to make sure the download files provided here contain the latest versions of the fonts. Enjoy! </p>
+    </div>
+{% endblock content %}

@@ -15,5 +15,7 @@ urlpatterns = [
 
     url(r'^cabinet/?$', views_client.cabinet, name='cabinet'),
 
+    url(r'^boats/?$', views.boats, name='boats'),
+
     url(r'^robots.txt$', views.robots, name='robots.txt'),
 ]

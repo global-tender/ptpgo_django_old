@@ -3,12 +3,21 @@ from django.template import loader
 
 
 def index(request):
-    template = loader.get_template('content.html')
+    template = loader.get_template('pages/index.html')
     template_args = {
-        'content': 'pages/index.html',
         'request': request,
         'title': 'Index page',
         'header_class': 'header--index',
+    }
+    return StreamingHttpResponse(template.render(template_args, request))
+
+
+def boats(request):
+    template = loader.get_template('pages/boats.html')
+    template_args = {
+        'request': request,
+        'title': 'Boats list',
+        'header_class': 'undefined',
     }
     return StreamingHttpResponse(template.render(template_args, request))
 

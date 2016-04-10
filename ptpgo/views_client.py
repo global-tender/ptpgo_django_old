@@ -122,9 +122,8 @@ def confirm_email(request):
     else:
         return HttpResponseRedirect('/')
 
-    template = loader.get_template('content.html')
+    template = loader.get_template('pages/client/confirm_email.html')
     template_args = {
-        'content': 'pages/client/confirm_email.html',
         'request': request,
         'title': 'Подтверждение E-Mail адреса',
         'header_class': 'undefined',
@@ -150,9 +149,8 @@ def cabinet(request):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/')
 
-    template = loader.get_template('content.html')
+    template = loader.get_template('pages/client/cabinet.html')
     template_args = {
-        'content': 'pages/client/cabinet.html',
         'request': request,
         'title': 'Кабинет',
         'header_class': 'undefined',
