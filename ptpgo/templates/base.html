@@ -22,15 +22,15 @@
               <div class="user__link js-user-link"><span style="background-image: url(/static/images/tmp/profile_image.jpg);" class="user__image"></span><span class="user__name">{{request.user.email}}</span></div>
               <div class="user__drop">
                 <ul class="drop__list js-user-drop">
-                  <li class="list__item"><a href="/cabinet/" class="item__link">Кабинет</a></li>
-                  <li class="list__item"><a href="#" class="item__link">Мои заказы</a></li>
+                  <li class="list__item"><a href="/cabinet/" class="item__link {% active '/cabinet' %}">Кабинет</a></li>
+                  <li class="list__item"><a href="#" class="item__link {% active '/orders' %}">Мои заказы</a></li>
                   {% get_user_boats as user_boats %}
                   {% if user_boats %}
-                    <li class="list__item"><a href="#" class="item__link">Мои лодки</a></li>
+                    <li class="list__item"><a href="#" class="item__link {% active '/myboats' %}">Мои лодки</a></li>
                   {% endif %}
-                  <li class="list__item"><a href="#" class="item__link">Сообщения</a></li>
-                  <li class="list__item"><a href="#" class="item__link">Профиль</a></li>
-                  <li class="list__item"><a href="#" class="item__link">Настройки</a></li>
+                  <li class="list__item"><a href="#" class="item__link {% active '/messages' %}">Сообщения</a></li>
+                  <li class="list__item"><a href="#" class="item__link {% active '/profile' %}">Профиль</a></li>
+                  <li class="list__item"><a href="#" class="item__link {% active '/settings' %}">Настройки</a></li>
                   <li class="list__item"><a href="/signout/" class="item__link">Выйти</a></li>
                 </ul>
               </div>

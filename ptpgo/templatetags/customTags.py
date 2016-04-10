@@ -14,3 +14,12 @@ def get_user_boats(context):
             return False
     except Exception as e:
         return False
+
+
+@register.simple_tag(takes_context=True)
+def active(context, urlpath):
+    request = context['request']
+    if request.path.startswith(urlpath):
+        return 'active'
+    else:
+        return ''
