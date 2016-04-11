@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="wrapper">
+      {% if added_phone %}
+        <h3>Добавленный номер телефона: {{added_phone}}</h3>
+        {% if phone_confirmed %}
+          <p>Статус: подтвержден</p>
+        {% else %}
+          <form method="POST" action="{{request.path}}">{% csrf_token %}
+            <label>Введите код подтверждения</label> <input type="text" name="phone_confirm_code"><br />
+            <input type="submit" value="Подтвердить">
+          </form>
+        {% endif %}
+      {% else %}
+        <form method="POST" action="{{request.path}}">{% csrf_token %}
+          <label>Номер телефона: </label> <input type="text" name="phone"><br />
+          <input type="submit" value="Добавить">
+        </form>
+      {% endif %}
+    </div>
+{% endblock content %}

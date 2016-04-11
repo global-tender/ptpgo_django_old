@@ -1,6 +1,9 @@
 import os
 import binascii
 import json
+import random
+import urllib.request
+import urllib.parse
 from django.core import mail
 from django.template import loader
 from django.contrib.auth import authenticate, login, logout
@@ -128,6 +131,64 @@ def confirm_email(request):
         'title': 'Подтверждение E-Mail адреса',
         'header_class': 'undefined',
         'email_confirmed': email_confirmed,
+    }
+    return StreamingHttpResponse(template.render(template_args, request))
+
+
+def add_phone(request):
+
+    referer = utility.get_referer(request)
+
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect(referer)
+
+    phone_confirmed = False
+    added_phone = False
+
+    client = Clients.objects.filter(user=request.user).first()
+    if client:
+
+        if client.phone:
+            added_phone = client.phone
+
+        if client.phone_confirmed:
+            phone_confirmed = True
+
+        if request.method == 'POST':
+            phone = request.POST.get('phone', False)
+            phone_confirm_code = request.POST.get('phone_confirm_code', False)
+
+            if phone:
+                if not client.phone:
+                    random_confirm_code = random.randint(10000,99999)
+
+                    # TODO: check phone format
+                    Clients.objects.filter(user=client.user).update(phone=phone)
+                    Clients.objects.filter(user=client.user).update(phone_confirm_code=random_confirm_code)
+                    added_phone = phone
+
+                    args = {}
+                    args['api_id'] = "0881834C-E81D-4F95-DCF2-D000B667FEEA"
+                    args['to'] = phone
+                    args['text'] = "PTPGO код подтверждения телефона: %s" % random_confirm_code
+                    url = "http://sms.ru/sms/send?%s" % (urllib.parse.urlencode(args))
+                    resp = urllib.request.urlopen(url).read().decode()
+
+            elif phone_confirm_code:
+                if not client.phone_confirmed:
+                    if phone_confirm_code == client.phone_confirm_code:
+                        Clients.objects.filter(user=client.user).update(phone_confirmed=True)
+                        Clients.objects.filter(user=client.user).update(phone_confirm_code='')
+                        phone_confirmed = True
+
+
+    template = loader.get_template('pages/client/add_phone.html')
+    template_args = {
+        'request': request,
+        'title': 'Добавить телефонный номер',
+        'header_class': 'undefined',
+        'added_phone': added_phone,
+        'phone_confirmed': phone_confirmed,
     }
     return StreamingHttpResponse(template.render(template_args, request))
 

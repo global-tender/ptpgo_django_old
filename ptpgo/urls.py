@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^signup/?$', views_client.signup, name='signup'),
     url(r'^signout/?$', views_client.signout, name='signout'),
     url(r'^confirm_email/?$', views_client.confirm_email, name='confirm_email'),
+    url(r'^add_phone/?$', views_client.add_phone, name='add_phone'),
     url(r'^pass_reset/?$', views_client.pass_reset, name='pass_reset'),
 
     url(r'^cabinet/?$', views_client.cabinet, name='cabinet'),
